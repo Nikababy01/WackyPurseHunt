@@ -11,5 +11,19 @@ namespace WackyPurseHunt.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
+        ProductsRepository _repo;
+
+        public ProductsController()
+        {
+            _repo = new ProductsRepository();
+        }
+
+        [HttpGet]
+        public IActionResult GetAllProducts()
+        {
+            var allproducts = _repo.GetAll();
+
+            return Ok(allproducts);
+        }
     }
 }

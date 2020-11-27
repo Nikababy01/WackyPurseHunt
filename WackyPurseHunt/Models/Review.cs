@@ -12,7 +12,7 @@ namespace WackyPurseHunt.Models
         public int CustomerId { get; set; }
         public int ProductId { get; set; }
         public int OrderId { get; set; }
-        public int StarRating { get; set; }
+        public int StarRatings { get; set; }
         public bool IsActive { get; set; } = true;
     }
 }
