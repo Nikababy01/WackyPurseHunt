@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "dx5MA4C8e5LbenFpFPTqHib4VsuC6IDiRkdN3r+IFFNFilIOn674dMmMgk0mpzbJgx2+/vVSTntE/Ss/k7O92Q==",
+  "dgSpecHash": "UWRRmmwMGXYAMxj0n2Vfz7XS4ilPkFSIcGchHmT6Us/vicBXxqK/MAuVlQOlfqdymxNrRWOE/bDK2qvmAeJSzA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Moniq\\source\\repos\\WackyPurseHunt\\WackyPurseHuntOld\\WackyPurseHunt\\WackyPurseHunt.csproj",
+  "projectFilePath": "C:\\Users\\Moniq\\source\\repos\\WackyPurseHunt\\WackyPurseHunt\\WackyPurseHunt.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Moniq\\.nuget\\packages\\dapper\\2.0.78\\dapper.2.0.78.nupkg.sha512",
     "C:\\Users\\Moniq\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace WackyPurseHunt.Data
 {
-    public class OrderRepository
+    public class OrdersRepository
     {
     }
 }
