@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WackyPurseHunt.Data;
 
 namespace WackyPurseHunt.Controllers
 {
@@ -11,19 +12,19 @@ namespace WackyPurseHunt.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        ProductsRepository _repo;
+        ProductRepository _repo;
 
         public ProductsController()
         {
-            _repo = new ProductsRepository();
+            _repo = new ProductRepository();
         }
 
-        [HttpGet]
-        public IActionResult GetAllProducts()
-        {
-            var allproducts = _repo.GetAll();
+        //[HttpGet]
+        //public IActionResult GetAllProducts()
+        //{
+        //    var allproducts = _repo.GetAll();
 
-            return Ok(allproducts);
-        }
+        //    return Ok(allproducts);
+        //}
     }
 }
