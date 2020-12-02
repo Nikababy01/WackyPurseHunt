@@ -11,6 +11,7 @@ import {
 } from 'reactstrap';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import authRequests from '../../../helpers/data/authData';
 
 import './MyNavbar.scss';
 
@@ -22,6 +23,19 @@ state = {
 toggle = () => {
   this.setState({ isOpen: !this.state.isOpen });
 }
+
+logoutClickEvent = (e) => {
+  const { user } = this.state;
+  e.preventDefault();
+  authRequests
+    .logoutUser(user)
+    .then(() => {
+      this.props.history.push('/home');
+    })
+    .catch((error) => {
+      console.error('there was an error logging out', error);
+    });
+};
 
 render() {
   const { isOpen } = this.state;
@@ -37,16 +51,10 @@ render() {
           <NavLink tag={RRNavLink} to='/products'>Products</NavLink>
           </NavItem>
           <NavItem>
-          <NavLink tag={RRNavLink} to='/login'>Login</NavLink>
-          </NavItem>
-          <NavItem>
-          <NavLink tag={RRNavLink} to='/signup'>Signup</NavLink>
-          </NavItem>
-          <NavItem>
           <NavLink tag={RRNavLink} to='/cart'>Cart</NavLink>
           </NavItem>
           <NavItem>
-            <NavLink onClick={this.logMeOut}>Logout</NavLink>
+            <NavLink onClick={this.logoutClickEvent}>Logout</NavLink>
             </NavItem>
         </Nav>
       );
