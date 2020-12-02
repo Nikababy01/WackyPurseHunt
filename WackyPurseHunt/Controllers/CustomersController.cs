@@ -11,7 +11,7 @@ namespace WackyPurseHunt.Controllers
 {
     [Route("api/customers")]
     [ApiController]
-    public class CustomersController : ControllerBase
+    public class CustomersController : FirebaseEnabledController
     {
         CustomerRepository _repo;
 
