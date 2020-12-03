@@ -27,6 +27,11 @@ namespace WackyPurseHunt.Controllers
 
             return Ok(allCustomers);
         }
-
+        [HttpPost]
+        public IActionResult CreateNewCustomer(Customer customer)
+        {
+            _repo.Add(customer);
+            return Created($"/api/customers/{customer.Id}", customer);
+        }
     }
 }
