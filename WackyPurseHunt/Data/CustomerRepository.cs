@@ -30,7 +30,7 @@ namespace WackyPurseHunt.Data
                                     ,[Password]
                                     ,[StreetAddress]
                                     ,[City]
-                                    ,[State]
+                                    ,[CityState]
                                     ,[Zipcode]  
                                     ,[PhoneNumber]
                                     ,[Uid]
@@ -39,7 +39,7 @@ namespace WackyPurseHunt.Data
                                     )
                                     Output inserted.id
                                     VALUES 
-                                    (@FirstName,@LastName,@Email,GETDATE(),@Password,@StreetAddress,@City,@State,@Zipcode,@PhoneNumber,@Uid,@PhotoImage,@IsAcitve)";
+                                    (@FirstName,@LastName,@Email,GETDATE(),@Password,@StreetAddress,@City,@CityState,@Zipcode,@PhoneNumber,@Uid,@PhotoImage,@IsActive)";
             using var db = new SqlConnection(_connectionString);
             var newId = db.ExecuteScalar<int>(sql, customerToAdd);
             customerToAdd.Id = newId;
