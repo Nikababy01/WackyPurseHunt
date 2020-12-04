@@ -20,5 +20,29 @@ namespace WackyPurseHunt.Data
 
             return customers.ToList();
         }
+        public void Add(Customer customerToAdd)
+        {
+            var sql = @"INSERT INTO [dbo].[Customers]
+                                    ([FirstName]
+                                    ,[LastName]
+                                    ,[Email]
+                                    ,[DateCreated]
+                                    ,[Password]
+                                    ,[StreetAddress]
+                                    ,[City]
+                                    ,[CityState]
+                                    ,[Zipcode]  
+                                    ,[PhoneNumber]
+                                    ,[Uid]
+                                    ,[PhotoImage]
+                                    ,[IsActive]
+                                    )
+                                    Output inserted.id
+                                    VALUES 
+                                    (@FirstName,@LastName,@Email,GETDATE(),@Password,@StreetAddress,@City,@CityState,@Zipcode,@PhoneNumber,@Uid,@PhotoImage,@IsActive)";
+            using var db = new SqlConnection(_connectionString);
+            var newId = db.ExecuteScalar<int>(sql, customerToAdd);
+            customerToAdd.Id = newId;
+        }
     }
 }

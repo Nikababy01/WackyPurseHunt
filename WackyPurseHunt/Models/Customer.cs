@@ -15,7 +15,7 @@ namespace WackyPurseHunt.Models
         public string Password { get; set; }
         public string StreetAddress { get; set; }
         public string City { get; set; }
-        public string State { get; set; }
+        public string CityState { get; set; }
         public int Zipcode { get; set; }
         public Int64 PhoneNumber { get; set; }
         public string Uid { get; set; }

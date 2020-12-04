@@ -26,9 +26,13 @@ const registerUser = (user) =>
       uid: firebase.auth().currentUser.uid,
       email: user.email,
       password: user.password,
-      userName: user.userName,
       firstName: user.firstName,
       lastName: user.lastName,
+      streetAddress: user.streetAddress,
+      city: user.city,
+      cityState: user.cityState,
+      // zipcode: user.zipcode,
+      // phoneNumber: user.phoneNumber,
     };
 
     // get token from firebase
@@ -36,7 +40,7 @@ const registerUser = (user) =>
       // save the token to the session storage
       .then((token) => sessionStorage.setItem('token', token))
       // save the user to the the api
-      .then(() => axios.post(`${baseUrl}/users`, userInfo));
+      .then(() => axios.post(`${baseUrl}/customers`, userInfo));
     console.error('register', user);
   });
 const loginUser = (user) =>

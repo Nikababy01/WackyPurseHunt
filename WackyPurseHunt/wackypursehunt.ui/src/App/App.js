@@ -13,6 +13,7 @@ import {
 import MyNavbar from '../components/shared/MyNavbar/MyNavbar';
 import Home from '../components/pages/Home/Home';
 import Login from '../components/pages/Login/Login';
+import Register from '../components/pages/Register/Register';
 import Cart from '../components/pages/Cart/Cart';
 import Products from '../components/pages/Products/Products';
 import fbConnection from '../helpers/data/connection';
@@ -62,6 +63,7 @@ class App extends React.Component {
                <Switch>
                  <Route path='/home' component={Home} authed={authed} />
                  <Route path='/login' component={Login} authed={authed} />
+                 <Route path='/register' component={Register} />
                  <Route path='/products' component={Products} authed={authed} />
                  <Route path='/cart' component={Cart} authed={authed} />
                  <Redirect from="*" to="/home"/>

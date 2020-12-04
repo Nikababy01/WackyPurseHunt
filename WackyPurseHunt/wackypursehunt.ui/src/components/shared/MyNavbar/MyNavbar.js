@@ -70,7 +70,7 @@ render() {
           <NavLink tag={RRNavLink} to='/login'>Login</NavLink>
           </NavItem>
           <NavItem>
-          <NavLink tag={RRNavLink} to='/signup'>Signup</NavLink>
+          <NavLink tag={RRNavLink} to='/register'>Signup</NavLink>
           </NavItem>
     </Nav>;
   };
