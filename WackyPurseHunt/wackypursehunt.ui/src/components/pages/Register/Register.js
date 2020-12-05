@@ -16,8 +16,8 @@ class Register extends React.Component {
       streetAddress: '',
       city: '',
       cityState: '',
-      // zipcode: '',
-      // phoneNumber: '',
+      zipcode: '',
+      phoneNumber: '',
     },
   }
 
@@ -77,17 +77,17 @@ class Register extends React.Component {
     this.setState({ user: tempUser });
   };
 
-  // zipcodeChange = (e) => {
-  //   const tempUser = { ...this.state.user };
-  //   tempUser.zipcode = e.target.value;
-  //   this.setState({ user: tempUser });
-  // };
+  zipcodeChange = (e) => {
+    const tempUser = { ...this.state.user };
+    tempUser.zipcode = e.target.value;
+    this.setState({ user: tempUser });
+  };
 
-  // phoneNumberChange = (e) => {
-  //   const tempUser = { ...this.state.user };
-  //   tempUser.phoneNumber = e.target.value;
-  //   this.setState({ user: tempUser });
-  // };
+  phoneNumberChange = (e) => {
+    const tempUser = { ...this.state.user };
+    tempUser.phoneNumber = e.target.value;
+    this.setState({ user: tempUser });
+  };
 
   render() {
     const { user } = this.state;
@@ -202,7 +202,7 @@ class Register extends React.Component {
                 />
               </div>
             </div>
-             {/* <div className="form-group">
+              <div className="form-group">
               <label htmlFor="inputZipcode" className="col-sm-4 control-label">
                 Zipcode:
               </label>
@@ -216,8 +216,8 @@ class Register extends React.Component {
                   onChange={this.zipcodeChange}
                 />
               </div>
-            </div> */}
-            {/* <div className="form-group">
+            </div>
+             <div className="form-group">
               <label htmlFor="inputPhoneNumber" className="col-sm-4 control-label">
                 Phone Number:
               </label>
@@ -231,7 +231,7 @@ class Register extends React.Component {
                   onChange={this.phoneNumberChange}
                 />
               </div>
-            </div> */}
+            </div>
             <div className="form-group mt-15px">
               <div>
                 <button
