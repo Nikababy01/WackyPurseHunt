@@ -31,8 +31,8 @@ const registerUser = (user) =>
       streetAddress: user.streetAddress,
       city: user.city,
       cityState: user.cityState,
-      // zipcode: user.zipcode,
-      // phoneNumber: user.phoneNumber,
+      zipcode: user.zipcode,
+      phoneNumber: user.phoneNumber,
     };
 
     // get token from firebase
