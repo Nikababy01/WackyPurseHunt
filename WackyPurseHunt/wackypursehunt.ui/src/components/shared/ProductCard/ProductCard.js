@@ -1,20 +1,22 @@
 import React from 'react';
-import customer from '../../../helpers/data/customerData';
+import productData from '../../../helpers/data/productData';
 
-// class ProductCard extends React.Component {
-//   render() {
-//     const { customer } = this.props;
-//     return (
-//       <div className="ProductCard col-4">
-//         <div className="card">
-//           <div className="card-body">
-//             <p className="card"
-//           </div>
-//         </div>
+import './ProductCard.scss';
 
-//       </div>
-//     )
-//   }
-// }
+class ProductCard extends React.Component {
+  render() {
+    const { product } = this.props;
+    return (
+      <div className="ProductCard col-4">
+        <div className="card">
+          <div className="card-body">
+            <p className="card-title">{product.title}</p>
+          </div>
+        </div>
 
-// export default ProductCard;
+      </div>
+    );
+  }
+}
+
+export default ProductCard;
