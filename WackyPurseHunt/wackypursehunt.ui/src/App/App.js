@@ -11,6 +11,7 @@ import {
 } from 'react-router-dom';
 
 import MyNavbar from '../components/shared/MyNavbar/MyNavbar';
+import Footer from '../components/shared/Footer/Footer';
 import Home from '../components/pages/Home/Home';
 import Login from '../components/pages/Login/Login';
 import Register from '../components/pages/Register/Register';
@@ -72,6 +73,7 @@ class App extends React.Component {
            </div>
          </React.Fragment>
          </BrowserRouter>
+         <Footer/>
       </div>
     );
   }
