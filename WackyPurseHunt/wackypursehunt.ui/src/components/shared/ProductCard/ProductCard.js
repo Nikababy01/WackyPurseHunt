@@ -9,6 +9,7 @@ class ProductCard extends React.Component {
     return (
       <div className="ProductCard col-4">
         <div className="card">
+          <img className="card-img-top" src={product.imageUrl} alt="product card"/>
           <div className="card-body">
             <p className="card-title">{product.title}</p>
           </div>

@@ -7,6 +7,13 @@ class Products extends React.Component {
     products: [],
   };
 
+  componentDidMount() {
+    productData.getAllProducts()
+      .then((products) => {
+        this.setState({ products });
+      });
+  }
+
   render() {
     const { products } = this.state;
     const buildProductsList = products.map((product) => (
