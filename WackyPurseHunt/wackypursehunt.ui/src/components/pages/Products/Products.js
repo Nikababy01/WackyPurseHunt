@@ -1,11 +1,28 @@
 import React, { Component } from 'react';
+import productData from '../../../helpers/data/productData';
+import ProductCard from '../../shared/ProductCard/ProductCard';
 
-export default class Products extends Component {
+class Products extends React.Component {
+  state = {
+    products: [],
+  };
+
+  componentDidMount() {
+    productData.getAllProducts()
+      .then((products) => {
+        this.setState({ products });
+      });
+  }
+
   render() {
+    const { products } = this.state;
+    const buildProductsList = products.map((product) => (
+      <ProductCard key={product.id} product={product}/>));
     return (
-      <div>
-        <h1>Products Component</h1>
-      </div>
+        <div className= "d-flex flex-wrap">
+          {buildProductsList}
+        </div>
     );
   }
 }
+export default Products;

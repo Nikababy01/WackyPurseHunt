@@ -7,7 +7,7 @@ class Footer extends React.Component {
       <React.Fragment>
       <div className="Footer">
       <div className="box-container footer-contact col-5">
-        <h2 className="contact-header">Contact</h2>
+        <h2 className="contact-header">Contact Us</h2>
         <p className="mr-auto"><i class="fas fa-map-marker-alt"></i> 2525 Designer Lane Nashville, TN 37207</p>
         <p className="mr-auto"><i class="fas fa-phone-alt"></i> 1-800-555-2252</p>
         <p className="mr-auto"><i className="fas fa-envelope-open-text"></i> PurseRUs@gmail.com</p>

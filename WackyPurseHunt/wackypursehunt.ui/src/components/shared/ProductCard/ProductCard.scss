@@ -1,0 +1,24 @@
+.ProductCard{
+  width: 100%;
+}
+
+.card{
+  margin-top: 20px;
+  width: 100%;
+  margin-bottom: 15px;
+  border-style: none;
+  height: 475px;
+}
+.card-title{
+   font-style: italic;
+   color: red;
+   text-align: center;
+  
+}
+.card-img-top{
+  width: 100%;
+  height: 70%;
+  margin-bottom: 1px;
+  object-fit: fill;
+    
+}

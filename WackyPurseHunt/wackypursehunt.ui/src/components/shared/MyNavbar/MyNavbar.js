@@ -76,7 +76,7 @@ render() {
   };
   return (
     <div className="MyNavbar">
-     <Navbar color="light" red expand="md" font-size="36px">
+     <Navbar color="mg-dark" red expand="md" font-size="36px">
         <NavbarBrand href="/"><img className="logo" src="" alt="logo"></img>Welcome to Wacky Purse Hunt!</NavbarBrand>
         <p><strong><em>Find your purse!</em></strong></p>
         <NavbarToggler onClick={this.toggle} />
