@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import productData from '../../../helpers/data/productData';
 
 class Singleview extends React.Component {
   state = {
-    selectedProduct: {},
+    product: {},
   }
 
   // buildSingleView = () => {
@@ -20,21 +19,28 @@ class Singleview extends React.Component {
   // }
 
   componentDidMount() {
-    const { productId } = this.props.match.parms;
-    productData.getSingleProduct(productId)
-      .then((response) => this.setState({ selectedProduct: response.data }))
+    const { id } = this.props.match.parms.id;
+    productData.getSingleProduct(id)
+      .then((response) => this.setState({ product: response.data }))
       .catch((err) => console.error('unable to get single product: ', err));
   }
 
   render() {
-    const { selectedProduct } = this.state;
+    const { product } = this.state;
+    console.error('singleview', product);
     return (
-      <div className="Singleview">
-        <h1>{selectedProduct.title}</h1>
-        <img src="selectedProduct.imageUrl" alt="item"/>
-        <h3>Price: ${selectedProduct.price}</h3>
-        <h4>{selectedProduct.description}</h4>
-        <h6>Product Theme: {selectedProduct.productThemeId}</h6>
+      <div className="container view">
+        <div className="row">
+          <div className="col-5">
+        <img src={product.imageUrl} alt="item"/>
+        </div>
+        <div className="col-7">
+        <h1>{product.title}</h1>
+        <h3>Price: ${product.price}</h3>
+        <h4>{product.description}</h4>
+        <h6>Product Theme: {product.productThemeId}</h6>
+      </div>
+      </div>
       </div>
     );
   }

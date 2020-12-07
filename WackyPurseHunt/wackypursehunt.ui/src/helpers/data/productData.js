@@ -7,6 +7,6 @@ const getAllProducts = () => new Promise((resolve, reject) => {
     .catch((error) => reject(error));
 });
 
-const getSingleProduct = (productId) => axios.get(`${baseUrl}/products/${productId}`);
+const getSingleProduct = (id) => axios.get(`${baseUrl}/products/${id}`);
 
 export default { getAllProducts, getSingleProduct };
