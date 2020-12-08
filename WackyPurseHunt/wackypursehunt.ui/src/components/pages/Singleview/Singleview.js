@@ -6,18 +6,6 @@ class Singleview extends React.Component {
     product: {},
   }
 
-  // buildSingleView = () => {
-  //   const { selectedProductId } = this.state;
-  //   productData.getSingleProduct(selectedProductId)
-  //     .then((response) => {
-  //       this.setState({
-  //         selectedProduct: response.data,
-  //         selectedProductId: response.data.id,
-  //       });
-  //     })
-  //     .catch((error) => console.error('Unable to get the selected product', error));
-  // }
-
   componentDidMount() {
     const { id } = this.props.match.params;
     productData.getSingleProduct(id)

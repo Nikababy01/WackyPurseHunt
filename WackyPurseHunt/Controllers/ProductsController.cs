@@ -19,12 +19,25 @@ namespace WackyPurseHunt.Controllers
             _repo = new ProductRepository();
         }
 
-        //[HttpGet]
-        //public IActionResult GetAllProducts()
-        //{
-        //    var allproducts = _repo.GetAll();
+        [HttpGet]
+        public IActionResult GetAllProducts()
+        {
+          var allproducts = _repo.GetAll();
 
-        //    return Ok(allproducts);
-        //}
+          return Ok(allproducts);
+        }
+        
+        [HttpGet("{id}")]
+        
+        public IActionResult GetSingleProduct(int id)
+        {
+            var singleProduct = _repo.GetProductById(id);  
+             
+
+            if (singleProduct == null) return NotFound("Nothing was found with this id! Try again.");
+
+            return Ok(singleProduct);
+        }
+
     }
 }
