@@ -2,9 +2,11 @@ import axios from 'axios';
 import { baseUrl } from './constants.json';
 
 const getAllProducts = () => new Promise((resolve, reject) => {
-  axios.get(`${baseUrl}/Products`)
+  axios.get(`${baseUrl}/products`)
     .then((response) => resolve(response.data))
     .catch((error) => reject(error));
 });
 
-export default { getAllProducts };
+const getSingleProduct = (id) => axios.get(`${baseUrl}/products/${id}`);
+
+export default { getAllProducts, getSingleProduct };
