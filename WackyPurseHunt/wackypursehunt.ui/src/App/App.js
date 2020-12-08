@@ -66,8 +66,8 @@ class App extends React.Component {
                  <Route path='/home' component={Home} authed={authed} />
                  <Route path='/login' component={Login} authed={authed} />
                  <Route path='/register' component={Register} />
-                 <Route path='/products' component={Products} authed={authed} />
                  <Route path='/products/:id' render={(props) => <Singleview authed={authed} {...props} />} />
+                 <Route path='/products' component={Products} authed={authed} />
                  <Route path='/cart' component={Cart} authed={authed} />
                  <Redirect from="*" to="/home"/>
                  </Switch>
