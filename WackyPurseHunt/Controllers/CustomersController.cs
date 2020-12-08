@@ -13,25 +13,36 @@ namespace WackyPurseHunt.Controllers
     [ApiController]
     public class CustomersController : FirebaseEnabledController
     {
-        CustomerRepository _repo;
+        CustomerRepository _customerRepo;
+
+        public string CustomerId { get; private set; }
 
         public CustomersController()
         {
-            _repo = new CustomerRepository();
+            _customerRepo = new CustomerRepository();
         }
 
         [HttpGet]
         public IActionResult GetAllCustomers()
         {
-            var allCustomers = _repo.GetAll();
+            var allCustomers = _customerRepo.GetAll();
 
             return Ok(allCustomers);
         }
         [HttpPost]
         public IActionResult CreateNewCustomer(Customer customer)
         {
-            _repo.Add(customer);
+            _customerRepo.Add(customer);
             return Created($"/api/customers/{customer.Id}", customer);
+        }
+
+        // New method to get the customer ID by the Firebase ID now that we have authentication via Firebase:
+        [HttpGet("uid")]
+        public IActionResult GetCustomerIdByUid()
+        {
+            var selectedCustomerId = _customerRepo.GetCustomerIdByUid(CustomerId);
+            if (selectedCustomerId == 0) return NotFound("We did not find a customer with this UID. Please try again.");
+            return Ok(selectedCustomerId);
         }
     }
 }

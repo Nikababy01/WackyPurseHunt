@@ -20,6 +20,23 @@ namespace WackyPurseHunt.Data
 
             return customers.ToList();
         }
+
+        // NEW method to get the customer ID by the Firebase UID now that we have authentication via Firebase:
+        public int GetCustomerIdByUid(string uid)
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            var queryForCustomerByUid = @"select *
+                            from Customers
+                            where Uid = @uid";
+
+            var parameterForCustomerUid = new { uid };
+
+            var selectedCustomerId = db.ExecuteScalar<int>(queryForCustomerByUid, parameterForCustomerUid);
+
+            return selectedCustomerId;
+        }
+
         public void Add(Customer customerToAdd)
         {
             var sql = @"INSERT INTO [dbo].[Customers]
