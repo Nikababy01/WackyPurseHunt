@@ -23,7 +23,7 @@ class Singleview extends React.Component {
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
     product.isActive
-      ? <div className="container">
+      ? <div className="singleview-container">
         <div className="row">
           <div className="col-5">
         <img src={product.imageUrl} alt="item" className="productImages"/>
