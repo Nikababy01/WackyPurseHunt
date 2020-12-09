@@ -28,8 +28,11 @@ class Home extends React.Component {
         </div>
       </div>
       <br />
-      <div className="container">
+      <div className="container-five-products-featured">
       <div className="row">
+        <div className="title-box">
+          <h2> New Arrivals</h2>
+        </div>
         <div className="d-flex flex-wrap">
           {buildTopFiveProducts}
         </div>

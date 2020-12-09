@@ -11,7 +11,7 @@ class Singleview extends React.Component {
   componentDidMount() {
     const { id } = this.props.match.params;
     productData.getSingleProduct(id)
-      .then((response) => this.setState({ product: response.data }))
+      .then((response) => this.setState({ selectedProduct: response.data }))
       .catch((err) => console.error('unable to get single product: ', err));
   }
 
@@ -23,7 +23,7 @@ class Singleview extends React.Component {
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
     selectedProduct.isActive
-      ? <div className="container">
+      ? <div className="single-view-container">
         <div className="row">
           <div className="col-5">
         <img src={selectedProduct.imageUrl} alt="item" className="productImages"/>
