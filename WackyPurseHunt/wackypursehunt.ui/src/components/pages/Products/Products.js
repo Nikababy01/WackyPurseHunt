@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import productData from '../../../helpers/data/productData';
 import ProductCard from '../../shared/ProductCard/ProductCard';
+import './Products.scss';
 
 class Products extends React.Component {
   state = {

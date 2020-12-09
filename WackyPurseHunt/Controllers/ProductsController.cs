@@ -10,19 +10,19 @@ namespace WackyPurseHunt.Controllers
 {
     [Route("api/products")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class ProductsController : FirebaseEnabledController
     {
-        ProductRepository _repo;
+        ProductsRepository _productsRepo;
 
         public ProductsController()
         {
-            _repo = new ProductRepository();
+            _productsRepo = new ProductsRepository();
         }
 
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-          var allproducts = _repo.GetAll();
+          var allproducts = _productsRepo.GetAll();
 
           return Ok(allproducts);
         }
@@ -31,13 +31,20 @@ namespace WackyPurseHunt.Controllers
         
         public IActionResult GetSingleProduct(int id)
         {
-            var singleProduct = _repo.GetProductById(id);  
+            var singleProduct = _productsRepo.GetProductById(id);  
              
 
             if (singleProduct == null) return NotFound("Nothing was found with this id! Try again.");
 
             return Ok(singleProduct);
         }
+        
+        [HttpGet("Top")]
+        public IActionResult GetProductsTopFive()
+        {
+            var topProducts = _productsRepo.GetProductsTop5();
 
+            return Ok(topProducts);
+        }
     }
 }

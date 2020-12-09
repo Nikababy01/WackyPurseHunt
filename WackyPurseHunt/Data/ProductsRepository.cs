@@ -9,7 +9,7 @@ using Microsoft.Data.SqlClient;
 
 namespace WackyPurseHunt.Data
 {
-    public class ProductRepository
+    public class ProductsRepository
     {
         static List<Product> _products = new List<Product>();
 
@@ -34,6 +34,18 @@ namespace WackyPurseHunt.Data
             var singleProduct = db.QueryFirstOrDefault<Product>(sql, parameters);
 
             return singleProduct;
+        }
+        public IEnumerable<Product> GetProductsTop5()
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"select top 5 * 
+                       from Products
+                       where isActive = 1
+                       order by DateAdded desc";
+
+            var topProducts = db.Query<Product>(sql);
+
+            return topProducts;
         }
 
     }

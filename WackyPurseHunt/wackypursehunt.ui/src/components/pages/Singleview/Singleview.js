@@ -5,7 +5,7 @@ import './Singleview.scss';
 
 class Singleview extends React.Component {
   state = {
-    product: {},
+    selectedProduct: {},
   }
 
   componentDidMount() {
@@ -16,22 +16,22 @@ class Singleview extends React.Component {
   }
 
   render() {
-    const { product } = this.state;
-    console.error('singleview', product);
+    const { selectedProduct } = this.state;
+    console.error('singleview', selectedProduct);
     return (
       <div>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
-    product.isActive
+    selectedProduct.isActive
       ? <div className="container">
         <div className="row">
           <div className="col-5">
-        <img src={product.imageUrl} alt="item" className="productImages"/>
+        <img src={selectedProduct.imageUrl} alt="item" className="productImages"/>
         </div>
         <div className="col-7">
-        <p className="product-title">{product.title}</p>
-        <p className="price">Price: ${product.price}.00</p>
-        <p className="desc">{product.description}</p>
+        <p className="product-title">{selectedProduct.title}</p>
+        <p className="price">Price: ${selectedProduct.price}.00</p>
+        <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
         <input className="qty-input" type="text" value="1"/>
         <button className="cart">Add to Cart</button>
