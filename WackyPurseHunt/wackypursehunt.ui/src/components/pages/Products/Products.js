@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import productData from '../../../helpers/data/productData';
+import productsData from '../../../helpers/data/productsData';
 import ProductCard from '../../shared/ProductCard/ProductCard';
+import './Products.scss';
 
 class Products extends React.Component {
   state = {
@@ -8,7 +9,7 @@ class Products extends React.Component {
   };
 
   componentDidMount() {
-    productData.getAllProducts()
+    productsData.getAllProducts()
       .then((products) => {
         this.setState({ products });
       });
@@ -19,7 +20,7 @@ class Products extends React.Component {
     const buildProductsList = products.map((product) => (
       <ProductCard key={product.id} product={product}/>));
     return (
-        <div className= "d-flex flex-wrap">
+        <div className="d-flex flex-wrap">
           {buildProductsList}
         </div>
     );
