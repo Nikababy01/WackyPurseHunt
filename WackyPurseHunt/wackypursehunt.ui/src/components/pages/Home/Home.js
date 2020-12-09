@@ -1,6 +1,6 @@
 import React from 'react';
-import productsData from '../../../helpers/data/productData';
-import ProductCard from '../../shared/ProductCard/ProductCard';
+import productsData from '../../../helpers/data/productsData';
+import NewArrivalCard from '../NewArrivalCard/NewArrivalCard';
 import './Home.scss';
 
 class Home extends React.Component {
@@ -18,7 +18,7 @@ class Home extends React.Component {
   render() {
     const { products } = this.state;
     const { authed } = this.props;
-    const buildTopFiveProducts = products.map((product) => (<ProductCard key={product.id} product={product} authed={authed}/>));
+    const buildTopFiveProducts = products.map((product) => (<NewArrivalCard key={product.id} product={product} authed={authed}/>));
     return (
       <div>
       <div className="jumbotron">

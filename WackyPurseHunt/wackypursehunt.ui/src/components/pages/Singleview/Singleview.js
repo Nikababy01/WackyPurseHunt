@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import productData from '../../../helpers/data/productData';
+import productsData from '../../../helpers/data/productsData';
 import './Singleview.scss';
 
 class Singleview extends React.Component {
@@ -10,7 +10,7 @@ class Singleview extends React.Component {
 
   componentDidMount() {
     const { id } = this.props.match.params;
-    productData.getSingleProduct(id)
+    productsData.getSingleProduct(id)
       .then((response) => this.setState({ selectedProduct: response.data }))
       .catch((err) => console.error('unable to get single product: ', err));
   }
