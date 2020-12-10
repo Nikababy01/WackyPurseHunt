@@ -1,24 +1,149 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import productsData from '../../../helpers/data/productsData';
+import authData from '../../../helpers/data/authData';
+import ordersData from '../../../helpers/data/ordersData';
+
 import './Singleview.scss';
+import productOrdersData from '../../../helpers/data/productOrdersData';
 
 class Singleview extends React.Component {
   state = {
     selectedProduct: {},
+    selectedProductId: this.props.match.params.id,
+    customerId: 0,
+    uid: '',
+    cart: {},
+    lineItems: [],
+    productQuantityOnSingleview: 1,
+    productInCart: false,
+
   }
 
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    productsData.getSingleProduct(id)
-      .then((response) => this.setState({ selectedProduct: response.data }))
-      .catch((err) => console.error('unable to get single product: ', err));
-  }
+ buildSingleView = () => {
+   const { selectedProductId } = this.state;
+   productsData.getSingleProduct(selectedProductId)
+     .then((response) => this.setState({
+       selectedProduct: response.data,
+       selectedProductId: response.data.id,
+       productQuantityOnSingleview: 1,
+     }))
+     .catch((err) => console.error('unable to get single product: ', err));
+ }
 
-  render() {
-    const { selectedProduct } = this.state;
-    console.error('singleview', selectedProduct);
-    return (
+ getCartOrder = () => {
+   const {
+     cart,
+     customerId,
+     uid,
+     lineItems,
+     selectedProductId,
+     productInCart,
+     productQuantityOnSingleView,
+     //  newproductQuantityForCart,
+     //  previousQuantityInCart,
+     //  relatedLineItemId,
+     //  relatedLineItem,
+   } = this.state;
+   // const loggedUserUid = authData.getUid();
+   ordersData.getCart()
+     .then((orderResponse) => {
+       if (orderResponse.status === 200) {
+         this.setState({
+           cart: orderResponse.data,
+           lineItems: orderResponse.data.lineItems,
+         });
+         console.error('line items', this.state.lineItems);
+         for (let i = 0; i < orderResponse.data.lineItems.length; i += 1) {
+           if (orderResponse.data.lineItems[i].productId === this.state.selectedProductId) {
+             this.setState({ productInCart: true });
+             //  this.setState({ previousQuantityInCart: orderResponse.data.lineItems[i].qty });
+             //  this.setState({ relatedLineItemId: orderResponse.data.lineItems[i].id });
+             //  this.setState({ relatedLineItem: orderResponse.data.lineItems[i] });
+           }
+         }
+       } else {
+         this.setState({
+           cart: null,
+           lineItems: [],
+         });
+       }
+     })
+     .catch((error) => console.error('Unable to get the shopping cart.', error));
+ }
+
+ componentDidMount() {
+   const {
+     selectedProductId,
+     selectedProduct,
+     customerId,
+     uid,
+     productQuantityOnSingleview,
+     //  previousQuantityInCart,
+     //  newProductQuantityForCart,
+     productInCart,
+   } = this.state;
+   const loggedCustomerUid = authData.getUid();
+   this.setState({ uid: loggedCustomerUid });
+   if (loggedCustomerUid !== '') {
+     this.getCartOrder(loggedCustomerUid);
+   }
+   this.buildSingleView(selectedProductId);
+ }
+
+ changeproductQuantityOnSingleView = (e) => {
+   e.preventDefault();
+   const {
+     productQuantityOnSingleView,
+     // previousQuantityInCart,
+     // newProductQuantityForCart,
+   } = this.state;
+   this.setState({ productQuantityOnSingleView: e.target.value * 1 });
+   // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
+ }
+
+ addToCart = (e) => {
+   e.preventDefault();
+   const {
+     cart,
+     customerId,
+     selectedProduct,
+     selectedProductId,
+     productQuantityOnSingleview,
+     productInCart,
+   } = this.state;
+   ordersData.createCart()
+     .then((newOrderResponse) => {
+       this.setState({
+         cart: newOrderResponse.data,
+         lineItems: [],
+       });
+       const orderId = newOrderResponse.data.id;
+       const productId = this.state.selectedProductId;
+       const newProductOrder = {
+         productId,
+         orderId,
+         qty: this.state.productQuantityOnSingleview,
+         isActive: true,
+         title: '',
+         price: 0,
+         subtotal: 0,
+       };
+       productOrdersData.postProductOrder(newProductOrder)
+         .then((productOrderResponse) => {
+           const currentCart = this.state.cart;
+           currentCart.lineItems.push(productOrderResponse.data);
+           this.setState({ cart: currentCart });
+         });
+     })
+     .catch((error) => console.error('Unable to create second catch the new shopping cart.', error));
+ }
+
+ render() {
+   const { selectedProduct, productQuantityOnSingleview } = this.state;
+   // const { authed, product } = this.props;
+   console.error('singleview', selectedProduct);
+   return (
       <div>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
@@ -33,8 +158,8 @@ class Singleview extends React.Component {
         <p className="price">Price: ${selectedProduct.price}.00</p>
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
-        <input className="qty-input" type="text" value="1"/>
-        <button className="cart">Add to Cart</button>
+        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
+        <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
       </div>
       </div>
       </div>
@@ -43,7 +168,7 @@ class Singleview extends React.Component {
       </div>
   }
 </div>
-    );
-  }
+   );
+ }
 }
 export default Singleview;
