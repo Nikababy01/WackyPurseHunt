@@ -31,7 +31,7 @@ class Singleview extends React.Component {
      .catch((err) => console.error('unable to get single product: ', err));
  }
 
- getCart = () => {
+ getCartOrder = () => {
    const {
      cart,
      customerId,
@@ -86,9 +86,20 @@ class Singleview extends React.Component {
    const loggedCustomerUid = authData.getUid();
    this.setState({ uid: loggedCustomerUid });
    if (loggedCustomerUid !== '') {
-     this.getCart(loggedCustomerUid);
+     this.getCartOrder(loggedCustomerUid);
    }
    this.buildSingleView(selectedProductId);
+ }
+
+ changeproductQuantityOnSingleView = (e) => {
+   e.preventDefault();
+   const {
+     productQuantityOnSingleView,
+     // previousQuantityInCart,
+     // newProductQuantityForCart,
+   } = this.state;
+   this.setState({ productQuantityOnSingleView: e.target.value * 1 });
+   // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
  }
 
  addToCart = (e) => {
@@ -147,8 +158,8 @@ class Singleview extends React.Component {
         <p className="price">Price: ${selectedProduct.price}.00</p>
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
-        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview}/>
-        <button className="cart" onClick={this.addToCart}>Add to Cart</button>
+        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
+        <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
       </div>
       </div>
       </div>

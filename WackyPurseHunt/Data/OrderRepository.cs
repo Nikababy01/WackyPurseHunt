@@ -60,7 +60,7 @@ namespace WackyPurseHunt.Data
         }
 
         // DEFINITION OF EXISTING CART: Get current incomplete/pending order for a given user (with related ProductOrder records too)!
-        public Order GetCart(int id)
+        public Order GetCartById(int id)
         {
             using var db = new SqlConnection(_connectionString);
 
@@ -109,6 +109,69 @@ namespace WackyPurseHunt.Data
             }
 
             return selectedOrder;
+        }
+        public Order CreateShoppingCart(int userId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            // get the latest payment type for the user:
+            var parameterUserId = new { userId };
+            var queryForLatestPaymentType = @"select *
+                                            from PaymentTypes
+                                            where UserId = @userId and IsActive = 1
+                                            order by Id desc";
+            var latestPayment = db.QueryFirstOrDefault<PaymentType>(queryForLatestPaymentType, parameterUserId);
+            if (latestPayment == null)
+            {
+                var createDefaultPaymentType = @"INSERT INTO [dbo].[PaymentTypes]
+                                                                    ([PaymentOption],
+                                                                     [CustomerId],
+                                                                     [AccountNo],
+                                                                     [ExpirationYear],
+                                                                     [ExpirationMonth],
+                                                                     [IsActive])
+                                                Output inserted.Id
+                                                VALUES 
+                                                    ('Please specify a payment type.',
+                                                    @customerId,
+                                                    '',
+                                                    '',
+                                                    '',
+                                                    1)";
+
+                var newPaymentTypeId = db.ExecuteScalar<int>(createDefaultPaymentType, parameterUserId);
+
+                var getPaymentType = @"select *
+                                   from PaymentTypes
+                                   where Id = @id";
+
+                var parameterForNewPaymentType = new { id = newPaymentTypeId };
+
+                var newPaymentType = db.QueryFirstOrDefault<PaymentType>(getPaymentType, parameterForNewPaymentType);
+
+                latestPayment = newPaymentType;
+            }
+
+            var latestPaymentTypeId = latestPayment.Id;
+
+            // create the new order for the cart:
+            var createOrder = @"INSERT INTO [dbo].[Orders]
+                                               ([CustomerId]
+                                                ,[IsCompleted]
+                                                ,[TotalPrice]
+                                                ,[PaymentTypeId]
+                                                ,[IsActive])
+                                            Output inserted.Id
+                                            VALUES
+                                            (@CustomerId, 0, 0, @latestPaymentTypeId,1)";
+
+            var parametersForNewOrder = new { userId, latestPaymentTypeId };
+            var newOrderId = db.ExecuteScalar<int>(createOrder, parametersForNewOrder);
+
+            var sqlGetOrder = "select * from Orders where Id = @id";
+            var parameters = new { id = newOrderId };
+            var newOrder = db.QueryFirstOrDefault<Order>(sqlGetOrder, parameters);
+
+            return newOrder;
         }
     }
 }

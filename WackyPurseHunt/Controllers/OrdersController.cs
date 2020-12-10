@@ -30,5 +30,26 @@ namespace WackyPurseHunt.Controllers
 
             return Created($"/api/orders/{brandNewOrder.Id}", brandNewOrder);
         }
+        // method for getting the cart!!!
+        [HttpGet("cartByUid")]
+        public IActionResult GetCart()
+        {
+            var currentUserId = _customerRepo.GetCustomerIdByUid(UserId);
+            if (_orderRepo.GetCartById(currentUserId) == null) return NoContent();
+
+            var selectedOrder = _orderRepo.GetCartById(currentUserId);
+
+            return Ok(selectedOrder);
+        }
+
+        // writing a new method here to create a shopping cart order:
+        [HttpPost("newCartByUid")]
+        public IActionResult CreateShoppingCart()
+        {
+            var currentUserId = _customerRepo.GetCustomerIdByUid(UserId);
+            var newCart = _orderRepo.CreateShoppingCart(currentUserId);
+            return Created($"/api/orders/cart/{newCart.Id}", newCart);
+        }
+
     }
 }
