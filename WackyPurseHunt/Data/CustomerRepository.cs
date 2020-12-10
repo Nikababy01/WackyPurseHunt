@@ -44,5 +44,19 @@ namespace WackyPurseHunt.Data
             var newId = db.ExecuteScalar<int>(sql, customerToAdd);
             customerToAdd.Id = newId;
         }
+        public int GetCustomerIdByUid(string uid)
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            var queryForCustomerByUid = @"select *
+                            from Customers
+                            where Uid = @uid";
+
+            var parameterForCustomerUid = new { uid };
+
+            var selectedCustomerId = db.ExecuteScalar<int>(queryForCustomerByUid, parameterForCustomerUid);
+
+            return selectedCustomerId;
+        }
     }
 }

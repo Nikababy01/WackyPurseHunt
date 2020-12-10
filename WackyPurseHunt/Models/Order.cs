@@ -14,5 +14,6 @@ namespace WackyPurseHunt.Models
         public int PaymentTypeId { get; set; }
         public DateTime PurchaseDate { get; set; }
         public bool IsActive { get; set; } = true;
+        public List<ProductOrderWithProductInfo> LineItems { get; set; } = new List<ProductOrderWithProductInfo>();
     }
 }
