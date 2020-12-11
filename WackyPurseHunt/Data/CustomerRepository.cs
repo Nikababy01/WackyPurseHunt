@@ -20,6 +20,20 @@ namespace WackyPurseHunt.Data
 
             return customers.ToList();
         }
+
+        // get user by Id for Shopping Cart
+        public Customer GetCustomerById(int id)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var query = @"select *
+                            from Customers
+                             where Id = @id";
+            var parameters = new { id = id };
+            var selectedCustomer = db.QueryFirstOrDefault<Customer>(query, parameters);
+            return selectedCustomer;
+        }
+
+        // used for registration
         public void Add(Customer customerToAdd)
         {
             var sql = @"INSERT INTO [dbo].[Customers]

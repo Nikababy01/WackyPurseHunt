@@ -27,6 +27,7 @@ class ShoppingCart extends React.Component {
         this.setState({ userId: userIdReturned.data });
         customersData.getSingleCustomer(this.state.userId)
           .then((userResponse) => {
+            console.error('userReponse', userResponse);
             this.setState({
               user: userResponse.data,
             });
@@ -44,10 +45,12 @@ class ShoppingCart extends React.Component {
     } = this.state;
     ordersData.getCart()
       .then((cartResponse) => {
+        console.error('cartResponse', cartResponse);
         if (cartResponse.status === 200) {
           this.setState({
             cart: cartResponse.data,
-            cartId: cartResponse.data.lineItems,
+            cartId: cartResponse.data.id,
+            lineItems: cartResponse.data.lineItems,
           });
         }
       })
@@ -89,6 +92,7 @@ class ShoppingCart extends React.Component {
             <Table hover>
               <thead>
                 <tr>
+                  <th>Photo</th>
                   <th>Product</th>
                   <th>Price Per Unit</th>
                   <th>Quantity</th>

@@ -9,7 +9,8 @@ class SingleLineItem extends React.Component {
     return (
           <tbody>
             <tr>
-                <th scope="row">{item.title}</th>
+                <th scope="row"><img src={item.imageUrl} alt="product-purse" className="productPhotoInCart"></img></th>
+                <td>{item.title}</td>
                 <td>${item.price}</td>
                 <td>{item.qty}</td>
                 <td>${item.subtotal}</td>

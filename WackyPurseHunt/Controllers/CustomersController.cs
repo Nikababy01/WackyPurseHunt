@@ -27,6 +27,16 @@ namespace WackyPurseHunt.Controllers
 
             return Ok(allCustomers);
         }
+
+        // used to get customer by id
+        [HttpGet("{id}")]
+        public IActionResult GetCustomersById(int id)
+        {
+            var selectedCustomer = _customerRepo.GetCustomerById(id);
+            if (selectedCustomer == null) return NotFound("We did not find a customer with that Id. Please try again.");
+            return Ok(selectedCustomer);
+        }
+
         // New method to get the yser ID by the Firebase ID now that we have authentication via Firebase:
         [HttpGet("uid")]
         public IActionResult GetUserIdByUid()
