@@ -33,9 +33,9 @@ namespace WackyPurseHunt.Data
                                              ,[IsActive] )
                                             Output inserted.Id
                                             VALUES
-                                            (@customerId,0,0,1,1)";
+                                            (@customerId,0,@totalPrice,1,1)";
             using var db = new SqlConnection(_connectionString);
-            var parametersForNewOrder = new { customerId };
+            var parametersForNewOrder = new { customerId, totalPrice = orderToAdd.TotalPrice};
             var newId = db.ExecuteScalar<int>(sqlInsert, parametersForNewOrder);
 
             var sqlGetOrder = "select * from Orders where Id = @id";
