@@ -7,7 +7,6 @@ import './NewArrivalCard.scss';
 class NewArrivalCard extends React.Component {
   render() {
     const { product } = this.props;
-    console.error('newarrival', product);
     const singleProductLink = `/products/${product.id}`;
     return (
       <div className="NewArrivalCard col-2">

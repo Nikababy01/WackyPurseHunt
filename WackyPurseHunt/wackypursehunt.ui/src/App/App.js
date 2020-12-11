@@ -15,7 +15,7 @@ import Footer from '../components/shared/Footer/Footer';
 import Home from '../components/pages/Home/Home';
 import Login from '../components/pages/Login/Login';
 import Register from '../components/pages/Register/Register';
-import Cart from '../components/pages/Cart/Cart';
+import ShoppingCart from '../components/pages/ShoppingCart/ShoppingCart';
 import Products from '../components/pages/Products/Products';
 import Singleview from '../components/pages/Singleview/Singleview';
 import fbConnection from '../helpers/data/connection';
@@ -68,7 +68,7 @@ class App extends React.Component {
                  <Route path='/register' component={Register} />
                  <Route path='/products/:id' render={(props) => <Singleview authed={authed} {...props} />} />
                  <Route path='/products' component={Products} authed={authed} />
-                 <Route path='/cart' component={Cart} authed={authed} />
+                 <Route path='/cart' component={ShoppingCart} authed={authed} />
                  <Redirect from="*" to="/home"/>
                  </Switch>
              </div>

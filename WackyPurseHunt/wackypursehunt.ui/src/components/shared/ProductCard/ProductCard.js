@@ -7,7 +7,6 @@ import './ProductCard.scss';
 class ProductCard extends React.Component {
   render() {
     const { product } = this.props;
-    console.error('myproducts', product);
     const singleProductLink = `/products/${product.id}`;
     return (
       <div className="ProductCard col-4">

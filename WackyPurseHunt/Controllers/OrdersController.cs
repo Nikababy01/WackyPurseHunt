@@ -30,14 +30,15 @@ namespace WackyPurseHunt.Controllers
 
             return Created($"/api/orders/{brandNewOrder.Id}", brandNewOrder);
         }
-        // method for getting the cart!!!
+        
+        // #1 method for getting the cart!!! in ordersData.js
         [HttpGet("cartByUid")]
         public IActionResult GetCart()
         {
             var currentUserId = _customerRepo.GetCustomerIdByUid(UserId);
-            if (_orderRepo.GetCartById(currentUserId) == null) return NoContent();
+            if (_orderRepo.GetCart(currentUserId) == null) return NoContent();
 
-            var selectedOrder = _orderRepo.GetCartById(currentUserId);
+            var selectedOrder = _orderRepo.GetCart(currentUserId);
 
             return Ok(selectedOrder);
         }
