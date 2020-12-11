@@ -7,4 +7,11 @@ const getAllCustomers = () => new Promise((resolve, reject) => {
     .catch((error) => reject(error));
 });
 
-export default { getAllCustomers };
+const getSingleCustomerIdByUid = () => axios.get(`${baseUrl}/customers/uid`);
+const getSingleCustomer = (userId) => axios.get(`${baseUrl}/customers/${userId}`);
+
+export default {
+  getAllCustomers,
+  getSingleCustomerIdByUid,
+  getSingleCustomer,
+};

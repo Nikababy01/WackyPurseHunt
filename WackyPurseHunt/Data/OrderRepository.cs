@@ -13,7 +13,15 @@ namespace WackyPurseHunt.Data
         static List<Order> orders = new List<Order>();
 
         const string _connectionString = "Server=localhost;Database= WackyPurseHunt;Trusted_Connection=True";
-        
+        public List<Order> GetAll()
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            var orders = db.Query<Order>("select * from orders where IsActive= 1 ");
+
+            return orders.ToList();
+        }
+
         //this function is used for addToCart
         public Order AddOrder(Order orderToAdd, int customerId)
         {
@@ -36,6 +44,7 @@ namespace WackyPurseHunt.Data
 
             return newOrder;
         }
+
         // Get single order with related ProductOrder records too!
         public Order GetOrderByIdWithLineItems(int id)
         {
@@ -59,8 +68,8 @@ namespace WackyPurseHunt.Data
             return selectedOrder;
         }
 
-        // DEFINITION OF EXISTING CART: Get current incomplete/pending order for a given user (with related ProductOrder records too)!
-        public Order GetCartById(int id)
+        // #1 DEFINITION OF EXISTING CART: Get current incomplete/pending order for a given user (with related ProductOrder records too)!
+        public Order GetCart(int id)
         {
             using var db = new SqlConnection(_connectionString);
 
@@ -77,7 +86,7 @@ namespace WackyPurseHunt.Data
 
             if (selectedOrder != null)
             {
-                // get the list of ProductOrder records associated with this order it:
+                // get the list of ProductOrder records associated with this order it: 
                 var orderId = selectedOrder.Id;
                 var parameterOrderId = new { OrderId = orderId };
                 var queryForLineItems = @"select po.Id, po.IsActive, po.OrderId, po.ProductId, po.Qty, p.Title, p.ImageUrl, p.Price, p.Price*po.Qty AS Subtotal
@@ -117,7 +126,7 @@ namespace WackyPurseHunt.Data
             var parameterUserId = new { userId };
             var queryForLatestPaymentType = @"select *
                                             from PaymentTypes
-                                            where UserId = @userId and IsActive = 1
+                                            where CustomerId = @userId and IsActive = 1
                                             order by Id desc";
             var latestPayment = db.QueryFirstOrDefault<PaymentType>(queryForLatestPaymentType, parameterUserId);
             if (latestPayment == null)
