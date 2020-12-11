@@ -20,17 +20,14 @@ namespace WackyPurseHunt.Controllers
             _orderRepo = new OrderRepository();
             _customerRepo = new CustomerRepository();
         }
-
-        // this is used to create and order for AddToCart
-        [HttpPost]
-        public IActionResult CreateOrder(Order newOrder)
+        [HttpGet]
+        public IActionResult GetAllOrders()
         {
-            var currentUserId = _customerRepo.GetCustomerIdByUid(UserId);
-            var brandNewOrder = _orderRepo.AddOrder(newOrder, currentUserId);
+            var allorders = _orderRepo.GetAll();
 
-            return Created($"/api/orders/{brandNewOrder.Id}", brandNewOrder);
+            return Ok(allorders);
         }
-        
+
         // #1 method for getting the cart!!! in ordersData.js
         [HttpGet("cartByUid")]
         public IActionResult GetCart()
@@ -43,6 +40,18 @@ namespace WackyPurseHunt.Controllers
             return Ok(selectedOrder);
         }
 
+
+        // this is used to create and order for AddToCart
+        [HttpPost]
+        public IActionResult CreateOrder(Order newOrder)
+        {
+            var currentUserId = _customerRepo.GetCustomerIdByUid(UserId);
+            var brandNewOrder = _orderRepo.AddOrder(newOrder, currentUserId);
+
+            return Created($"/api/orders/{brandNewOrder.Id}", brandNewOrder);
+        }
+        
+        
         // writing a new method here to create a shopping cart order:
         [HttpPost("newCartByUid")]
         public IActionResult CreateShoppingCart()

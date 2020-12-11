@@ -13,7 +13,15 @@ namespace WackyPurseHunt.Data
         static List<Order> orders = new List<Order>();
 
         const string _connectionString = "Server=localhost;Database= WackyPurseHunt;Trusted_Connection=True";
-        
+        public List<Order> GetAll()
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            var orders = db.Query<Order>("select * from orders where IsActive= 1 ");
+
+            return orders.ToList();
+        }
+
         //this function is used for addToCart
         public Order AddOrder(Order orderToAdd, int customerId)
         {
