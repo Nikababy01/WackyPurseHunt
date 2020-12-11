@@ -25,6 +25,7 @@ class ShoppingCart extends React.Component {
     customersData.getSingleCustomerIdByUid()
       .then((userIdReturned) => {
         this.setState({ userId: userIdReturned.data });
+        console.error('userIdReturned', userIdReturned);
         customersData.getSingleCustomer(this.state.userId)
           .then((userResponse) => {
             console.error('userReponse', userResponse);

@@ -23,6 +23,18 @@ namespace WackyPurseHunt.Controllers
             _productOrderWithInfoRepo = new ProductOrderWithProductInfoRepository();
         }
 
+        [HttpPost("newOrder")]
+        public IActionResult CreateProductOrder(ProductOrder newLineItem)
+        {
+            var brandNewProductOrder = _productOrderRepo.AddProductOrder(newLineItem);
+
+            return Created($"/api/lineitems/{newLineItem.Id}", brandNewProductOrder);
+        }
+       
+            
+    
+
+
         //new method to post a ProductOrder based on productId and orderId:
         //used for AddToCart
         [HttpPost("{productId}/{orderId}/{qty}")]

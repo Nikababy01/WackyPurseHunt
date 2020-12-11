@@ -112,7 +112,9 @@ class Singleview extends React.Component {
      productQuantityOnSingleview,
      productInCart,
    } = this.state;
-   ordersData.createCart()
+
+   const newOrder = { totalPrice: selectedProduct.price };
+   ordersData.postOrder(newOrder)
      .then((newOrderResponse) => {
        this.setState({
          cart: newOrderResponse.data,
@@ -134,6 +136,7 @@ class Singleview extends React.Component {
            const currentCart = this.state.cart;
            currentCart.lineItems.push(productOrderResponse.data);
            this.setState({ cart: currentCart });
+           this.props.history.push('/cart');
          });
      })
      .catch((error) => console.error('Unable to create second catch the new shopping cart.', error));
@@ -160,7 +163,7 @@ class Singleview extends React.Component {
         <label htmlFor="product-quantity">Quantity</label>
         <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
         <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
-      </div>
+        </div>
       </div>
       </div>
       : <div>
