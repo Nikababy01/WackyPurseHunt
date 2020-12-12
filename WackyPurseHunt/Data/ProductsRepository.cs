@@ -48,5 +48,18 @@ namespace WackyPurseHunt.Data
             return topProducts;
         }
 
+        //#2 this is for the sort by theme
+        public List<Product> GetProductsbyTheme(int productThemeId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"select p.Id, p.ProductThemeId
+                       from Products p
+                       where p.ProductThemeId = @productThemeId";
+                      var parameters = new { productThemeId = productThemeId };
+
+            var selectedTheme = db.Query<Product>(sql, parameters);
+           return selectedTheme.ToList();
+          
+        }
     }
 }

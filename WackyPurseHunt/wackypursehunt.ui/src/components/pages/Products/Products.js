@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import productsData from '../../../helpers/data/productsData';
 import ProductCard from '../../shared/ProductCard/ProductCard';
+import FilterProducts from '../../shared/FilterProducts/FilterProducts';
 import './Products.scss';
 
 class Products extends React.Component {
   state = {
     products: [],
+    theme: '',
+    active: false,
   };
 
   componentDidMount() {
@@ -15,14 +18,34 @@ class Products extends React.Component {
       });
   }
 
+  handleChangetheme = (e) => {
+    this.setState({ theme: e.target.value });
+    console.log(this.state.theme);
+    productsData.getProductsByTheme((this.state.theme))
+      .then((results) => {
+        console.log(results);
+        this.setState({ products: results });
+      });
+  }
+
   render() {
     const { products } = this.state;
     const buildProductsList = products.map((product) => (
       <ProductCard key={product.id} product={product}/>));
     return (
+      <React.Fragment>
+        <div className="d-flex flex-wrap">
+        <FilterProducts theme={this.state.theme}
+          sortColor={this.state.sortColor}
+          handleChangetheme={this.handleChangetheme}
+          handleChangesortColor={this.handleChangesortColor}
+          count={this.state.products.length}
+          />
+          </div>
         <div className="d-flex flex-wrap">
           {buildProductsList}
         </div>
+      </React.Fragment>
     );
   }
 }
