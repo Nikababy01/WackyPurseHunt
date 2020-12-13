@@ -13,16 +13,59 @@ namespace WackyPurseHunt.Data
         static List<Order> orders = new List<Order>();
 
         const string _connectionString = "Server=localhost;Database= WackyPurseHunt;Trusted_Connection=True";
-        public List<Order> GetAll()
+        //public List<Order> GetAll()
+        //{
+        //    using var db = new SqlConnection(_connectionString);
+
+        //    var orders = db.Query<Order>("select * from orders where IsActive= 1 ");
+
+        //    return orders.ToList();
+        //}
+        // this one is used for line items
+        public IEnumerable<Order> GetAllOrders()
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = "select * from Orders";
+
+            var allOrders = db.Query<Order>(sql);
+
+            List<Order> ordersList = new List<Order>();
+            ordersList = allOrders.ToList();
+
+            foreach (var item in allOrders)
+            {
+                // get order id:
+                var orderId = item.Id;
+
+                // get all the line items for this order:
+                var queryForLineItems = @"select *
+                                      from ProductOrders po
+                                      where po.OrderId = @id";
+                var parameters = new { id = orderId };
+                var orderLineItems = db.Query<ProductOrderWithProductInfo>(queryForLineItems, parameters);
+
+                List<ProductOrderWithProductInfo> orderLineItemsList = orderLineItems.ToList();
+
+                // assign the ProductOrder records returned by the query above to the LineItems List property on the order object:
+                item.LineItems.AddRange(orderLineItemsList);
+            }
+            return allOrders;
+        }
+
+        //#2 goes with update order and get order by id
+        public Order GetOrderById(int id)
         {
             using var db = new SqlConnection(_connectionString);
 
-            var orders = db.Query<Order>("select * from orders where IsActive= 1 ");
+            var sqlQuery = @"select * from Orders where Id = @id";
 
-            return orders.ToList();
+            var parameters = new { id }; //simplified display of id = id!
+
+            var selectedOrder = db.QueryFirstOrDefault<Order>(sqlQuery, parameters);
+
+            return selectedOrder;
         }
-
-        //this function is used for addToCart
+        //#1A this function is used for addToCart
         public Order AddOrder(Order orderToAdd, int customerId)
         {
             var sqlInsert = @"INSERT INTO [dbo].[Orders]
@@ -119,6 +162,8 @@ namespace WackyPurseHunt.Data
 
             return selectedOrder;
         }
+
+        //#3A writing a new method here to create a shopping cart order:
         public Order CreateShoppingCart(int userId)
         {
             using var db = new SqlConnection(_connectionString);
@@ -181,6 +226,32 @@ namespace WackyPurseHunt.Data
             var newOrder = db.QueryFirstOrDefault<Order>(sqlGetOrder, parameters);
 
             return newOrder;
+        }
+        //#2 how to update order 
+        public Order Update(int id, Order order)
+        {
+            var sqlUpdate = @"UPDATE [dbo].[Orders]
+                            SET[CustomerId] = @customerId
+                                ,[IsCompleted] = @isCompleted
+                                ,[TotalPrice] = @totalPrice
+                                ,[PaymentTypeId]= @paymentTypeId
+                                ,[PurchaseDate] = @purchaseDate
+                                ,[IsActive] = @ isActive
+                            OUTPUT INSERTED*
+                            WHERE Id = id";
+                using var db = new SqlConnection(_connectionString);
+            var parameters = new
+            {
+                order.CustomerId,
+                order.IsCompleted,
+                order.TotalPrice,
+                order.PaymentTypeId,
+                order.PurchaseDate,
+                order.IsActive,
+                id
+            };
+            var updatedOrder = db.QueryFirstOrDefault<Order>(sqlUpdate, parameters);
+            return updatedOrder;
         }
     }
 }

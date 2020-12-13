@@ -52,5 +52,46 @@ namespace WackyPurseHunt.Controllers
 
             return Created($"/api/lineitems/{newLineItem.Id}", brandNewProductOrder);
         }
+        [HttpPut("{id}")]
+        public IActionResult UpdateProductOrder(int id, ProductOrder lineItem)
+        {
+            var updatedLineItem = _productOrderRepo.Update(id, lineItem);
+
+            if (_productOrderRepo.GetSingleItemInOrderById(id) == null)
+            {
+                return NotFound("We could not find a line item with this ID. Please try again.");
+            }
+
+            return Ok(updatedLineItem);
+        }
+
+        //this goes with  the update productorderwithproductinfo
+        [HttpPut("withInfo/{id}")]
+        public IActionResult UpdateProductOrderWithInfo(int id, ProductOrderWithProductInfo lineItem)
+        {
+            var updatedLineItem = _productOrderWithInfoRepo.Update(id, lineItem);
+
+            if (_productOrderRepo.GetSingleItemInOrderById(id) == null)
+            {
+                return NotFound("We could not find a line item with this ID. Please try again.");
+            }
+
+            return Ok(updatedLineItem);
+        }
+
+        // new method to update the product order quantity if it already exists in an order / in the cart or to create it if not:
+        [HttpPut("{productId}/{orderId}/{qty}")]
+        public IActionResult UpdateProductOrderQuantityInCart(int productId, int orderId, int qty)
+        {
+            var lineItem = _productOrderRepo.Update(productId, orderId, qty);
+
+            if (_productOrderRepo.GetLineItemByProductAndOrder(productId, orderId) == null)
+            {
+                return NotFound("We could not find a line item with this productID and this orderID. Please try again.");
+            }
+
+            return Ok(lineItem);
+        }
+
     }
 }

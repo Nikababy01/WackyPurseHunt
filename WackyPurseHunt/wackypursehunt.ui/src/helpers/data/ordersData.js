@@ -13,12 +13,15 @@ const getCart = () => axios.get(`${baseUrl}/orders/cartByUid`);
 
 const postOrder = (newOrder) => axios.post(`${baseUrl}/orders`, newOrder);
 
-// const createCart = () => axios.post(`${baseUrl}/orders`);
+const createCart = () => axios.post(`${baseUrl}/orders/newCartByUid`);
+
+const updateOrder = (orderId, updatedOrder) => axios.put(`${baseUrl}/orders/${orderId}`, updatedOrder);
 
 export default {
   getAllOrders,
   getSingleOrder,
   getCart,
   postOrder,
-
+  createCart,
+  updateOrder,
 };

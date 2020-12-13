@@ -23,7 +23,7 @@ namespace WackyPurseHunt.Controllers
         [HttpGet]
         public IActionResult GetAllOrders()
         {
-            var allorders = _orderRepo.GetAll();
+            var allorders = _orderRepo.GetAllOrders();
 
             return Ok(allorders);
         }
@@ -40,8 +40,19 @@ namespace WackyPurseHunt.Controllers
             return Ok(selectedOrder);
         }
 
+        //#2 goes with get order by id and update orders
 
-        // this is used to create and order for AddToCart
+        [HttpGet("{id}")]
+        public IActionResult GetOrderById(int id)
+        {
+            if (_orderRepo.GetOrderById(id) == null) return NotFound("We could not find this order. Please enter a valid order ID.");
+
+            var selectedOrder = _orderRepo.GetOrderByIdWithLineItems(id);
+
+            return Ok(selectedOrder);
+        }
+
+        //#1A this function is used for addToCart
         [HttpPost]
         public IActionResult CreateOrder(Order newOrder)
         {
@@ -52,7 +63,7 @@ namespace WackyPurseHunt.Controllers
         }
         
         
-        // writing a new method here to create a shopping cart order:
+        //#3A writing a new method here to create a shopping cart order:
         [HttpPost("newCartByUid")]
         public IActionResult CreateShoppingCart()
         {
@@ -60,6 +71,18 @@ namespace WackyPurseHunt.Controllers
             var newCart = _orderRepo.CreateShoppingCart(currentUserId);
             return Created($"/api/orders/cart/{newCart.Id}", newCart);
         }
+        //#2 how to update order 
+        [HttpPut("{id}")]
+        public IActionResult UpdateOrder(int id, Order order)
+        {
+            var updatedOrder = _orderRepo.Update(id, order);
 
+            if (_orderRepo.GetOrderById(id) == null)
+            {
+                return NotFound("We could not find an order with this ID. Please try again.");
+            }
+
+            return Ok(updatedOrder);
+        }
     }
 }

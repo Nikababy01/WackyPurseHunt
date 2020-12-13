@@ -58,5 +58,6 @@ namespace WackyPurseHunt.Controllers
 
             return Ok(topProducts);
         }
+
     }
 }

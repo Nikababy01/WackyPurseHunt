@@ -13,6 +13,28 @@ namespace WackyPurseHunt.Data
         static List<ProductOrder> productOrders = new List<ProductOrder>();
 
         const string _connectionString = "Server=localhost;Database= WackyPurseHunt;Trusted_Connection=True";
+
+        //goes with update productOrderController
+
+        public ProductOrder GetSingleItemInOrderById(int id)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sqlQuery = "select * from ProductOrders where Id = @id";
+            var parameters = new { id };
+            var selectedItemInOrder = db.QueryFirstOrDefault<ProductOrder>(sqlQuery, parameters);
+            return selectedItemInOrder;
+        }
+
+        public ProductOrder GetLineItemByProductAndOrder(int productId, int orderId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sqlQueryToFindLineItem = "select * from ProductOrders where productId = @productId AND orderId=@orderId AND IsActive = 1";
+            var parametersToFindLineItem = new { productId, orderId };
+            var selectedLineItem = db.QueryFirstOrDefault<ProductOrder>(sqlQueryToFindLineItem, parametersToFindLineItem);
+            return selectedLineItem;
+        }
+
+        //#1 adds order to cart
         public ProductOrder AddProductOrder(ProductOrder newLineItem)
         {
             var sqlInsert = @"INSERT INTO [dbo].[ProductOrders]
@@ -35,6 +57,7 @@ namespace WackyPurseHunt.Data
             return newProductOrder;
         }
 
+        //#1 adds order to cart
         //Anca: Added an Add method that takes in the parameters rather than the whole object:
         public ProductOrder AddProductOrderWithProductAndOrderIds(int productId, int orderId, int qty)
         {
@@ -63,5 +86,56 @@ namespace WackyPurseHunt.Data
 
             return newProductOrder;
         }
+
+        //#2 updates product lineitems
+        public ProductOrder Update(int id, ProductOrder lineItem)
+        {
+            var sqlUpdate = @"UPDATE [dbo].[ProductOrders]
+                                    SET [ProductId] = @productId
+                                        ,[OrderId] = @orderId
+                                        ,[Qty] = @qty
+                                        ,[IsActive] = @isActive
+                                    OUTPUT INSERTED.*
+                                    WHERE Id = @id";
+            using var db = new SqlConnection(_connectionString);
+
+            var parameters = new
+            {
+                lineItem.ProductId,
+                lineItem.OrderId,
+                lineItem.Qty,
+                lineItem.IsActive,
+                id
+            };
+
+            var updatedLineItem = db.QueryFirstOrDefault<ProductOrder>(sqlUpdate, parameters);
+
+            return updatedLineItem;
+        }
+
+        // overloading the update method to use the productId and orderId and quantity as parameters:
+        public ProductOrder Update(int productId, int orderId, int qty)
+        {
+            var sqlUpdate = @"UPDATE [dbo].[ProductOrders]
+                                    SET [ProductId] = @productId
+                                        ,[OrderId] = @orderId
+                                        ,[Qty] = @qty
+                                        ,[IsActive] = 1
+                                    OUTPUT INSERTED.*
+                                    WHERE productId = @productId AND orderId = @orderId";
+            using var db = new SqlConnection(_connectionString);
+
+            var parameters = new
+            {
+                productId,
+                orderId,
+                qty,
+            };
+
+            var updatedLineItem = db.QueryFirstOrDefault<ProductOrder>(sqlUpdate, parameters);
+
+            return updatedLineItem;
+        }
+
     }
 }
