@@ -14,9 +14,11 @@ const getFiveLatestProducts = () => new Promise((resolve, reject) => {
 });
 
 const getSingleProduct = (id) => axios.get(`${baseUrl}/products/${id}`);
+const getProductsByTheme = (productThemeId) => axios.get(`${baseUrl}/products/theme/${productThemeId}`);
 
 export default {
   getAllProducts,
   getSingleProduct,
   getFiveLatestProducts,
+  getProductsByTheme,
 };

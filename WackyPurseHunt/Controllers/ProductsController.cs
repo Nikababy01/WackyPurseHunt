@@ -38,7 +38,19 @@ namespace WackyPurseHunt.Controllers
 
             return Ok(singleProduct);
         }
-        
+
+        // #2 this goes with GetProductsbyTheme
+        [HttpGet("theme/{productThemeId}")]
+
+        public IActionResult GetProductByTheme(int productThemeId)
+        {
+            var productTheme = _productsRepo.GetProductsbyTheme(productThemeId);
+
+            if (productTheme == null) return NotFound("Nothing was found with this id! Try again.");
+
+            return Ok(productTheme);
+        }
+
         [HttpGet("Top")]
         public IActionResult GetProductsTopFive()
         {
