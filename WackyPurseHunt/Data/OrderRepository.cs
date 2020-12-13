@@ -21,6 +21,19 @@ namespace WackyPurseHunt.Data
 
             return orders.ToList();
         }
+        // Get single order with just order table details:
+        public Order GetOrderById(int id)
+        {
+            using var db = new SqlConnection(_connectionString);
+
+            var sqlQuery = @"select * from Orders where Id = @id";
+
+            var parameters = new { id }; //simplified display of id = id!
+
+            var selectedOrder = db.QueryFirstOrDefault<Order>(sqlQuery, parameters);
+
+            return selectedOrder;
+        }
 
         //this function is used for addToCart
         public Order AddOrder(Order orderToAdd, int customerId)
@@ -182,5 +195,32 @@ namespace WackyPurseHunt.Data
 
             return newOrder;
         }
+        public Order Update(int id, Order order)
+        {
+            var sqlUpdate = @"UPDATE [dbo].[Orders]
+                                    SET [CustomerId] = @customerId
+                                        ,[IsCompleted] = @isCompleted
+                                        ,[TotalPrice] = @totalPrice
+                                        ,[PaymentTypeId] = @paymentTypeId
+                                        ,[PurchaseDate] = @purchaseDate
+                                        ,[IsActive] = @isActive
+                                    OUTPUT INSERTED.*
+                                    WHERE Id = @id";
+            using var db = new SqlConnection(_connectionString);
+            var parameters = new
+            {
+                order.CustomerId,
+                order.IsCompleted,
+                order.TotalPrice,
+                order.PaymentTypeId,
+                order.PurchaseDate,
+                order.IsActive,
+                id
+            };
+            var updatedOrder = db.QueryFirstOrDefault<Order>(sqlUpdate, parameters);
+
+            return updatedOrder;
+        }
+
     }
 }

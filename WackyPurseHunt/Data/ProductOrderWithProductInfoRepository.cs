@@ -34,5 +34,32 @@ namespace WackyPurseHunt.Data
 
             return newProductOrder;
         }
+        public ProductOrderWithProductInfo Update(int id, ProductOrderWithProductInfo lineItem)
+        {
+            var sqlUpdate = @"UPDATE [dbo].[ProductOrders]
+                                    SET [ProductId] = @productId
+                                        ,[OrderId] = @orderId
+                                        ,[Qty] = @qty
+                                        ,[IsActive] = @isActive
+                                    OUTPUT INSERTED.*
+                                    WHERE Id = @id";
+            using var db = new SqlConnection(_connectionString);
+
+            var parameters = new
+            {
+                lineItem.ProductId,
+                lineItem.OrderId,
+                lineItem.Qty,
+                lineItem.IsActive,
+                lineItem.Title,
+                lineItem.Price,
+                lineItem.Subtotal,
+                id
+            };
+
+            var updatedLineItem = db.QueryFirstOrDefault<ProductOrderWithProductInfo>(sqlUpdate, parameters);
+
+            return updatedLineItem;
+        }
     }
 }

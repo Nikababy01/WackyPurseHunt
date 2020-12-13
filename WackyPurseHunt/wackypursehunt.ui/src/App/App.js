@@ -1,14 +1,13 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import './App.scss';
-
 import {
   BrowserRouter,
   Route,
   Redirect,
   Switch,
 } from 'react-router-dom';
+import './App.scss';
 
 import MyNavbar from '../components/shared/MyNavbar/MyNavbar';
 import Footer from '../components/shared/Footer/Footer';

@@ -19,6 +19,7 @@ class ShoppingCart extends React.Component {
     userId: 0,
     uid: '',
     paymentTypeId: 1,
+    // validOrder: true,
   }
 
   getUser = () => {
@@ -43,6 +44,7 @@ class ShoppingCart extends React.Component {
       userId,
       uid,
       lineItems,
+      // validOrder,
     } = this.state;
     ordersData.getCart()
       .then((cartResponse) => {
@@ -53,9 +55,20 @@ class ShoppingCart extends React.Component {
             cartId: cartResponse.data.id,
             lineItems: cartResponse.data.lineItems,
           });
+        } else {
+          this.setState({
+            cart: null,
+            cartId: 0,
+            lineItems: [],
+            paymentTypeId: 0,
+            // selectedPaymentType: {},
+            // validOrder: false,
+          });
         }
+        console.error('cart from db', cartResponse);
+        console.error('current cart', this.state.cart);
       })
-      .catch((error) => console.error('Unable to get shopping cart.', error));
+      .catch((error) => console.error('Unable to get the shopping cart.', error));
   }
 
   buildCartPage = () => {
