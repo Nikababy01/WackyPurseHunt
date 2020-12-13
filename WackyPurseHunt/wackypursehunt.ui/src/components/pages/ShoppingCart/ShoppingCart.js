@@ -103,6 +103,8 @@ class ShoppingCart extends React.Component {
               {buildLineItems()}
             </Table>
           </div>
+          <button type="submit" className="cart" onClick={this.addToCart}>Continue Shopping</button>
+          <button type="submit" className="place-order" onClick={this.addToCart}>Checkout</button>
           </div>
       }
   </div>
