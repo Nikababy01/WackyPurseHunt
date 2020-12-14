@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Table } from 'reactstrap';
 
 import SingleLineItem from '../../shared/SingleLineItem/SingleLineItem';
@@ -19,6 +20,7 @@ class ShoppingCart extends React.Component {
     userId: 0,
     uid: '',
     paymentTypeId: 1,
+    // validOrder: true,
   }
 
   getUser = () => {
@@ -43,6 +45,7 @@ class ShoppingCart extends React.Component {
       userId,
       uid,
       lineItems,
+      // validOrder,
     } = this.state;
     ordersData.getCart()
       .then((cartResponse) => {
@@ -53,9 +56,20 @@ class ShoppingCart extends React.Component {
             cartId: cartResponse.data.id,
             lineItems: cartResponse.data.lineItems,
           });
+        } else {
+          this.setState({
+            cart: null,
+            cartId: 0,
+            lineItems: [],
+            paymentTypeId: 0,
+            // selectedPaymentType: {},
+            // validOrder: false,
+          });
         }
+        console.error('cart from db', cartResponse);
+        console.error('current cart', this.state.cart);
       })
-      .catch((error) => console.error('Unable to get shopping cart.', error));
+      .catch((error) => console.error('Unable to get the shopping cart.', error));
   }
 
   buildCartPage = () => {
@@ -74,7 +88,7 @@ class ShoppingCart extends React.Component {
       user,
     } = this.state;
     const buildLineItems = () => lineItems.map((item) => (
-      <SingleLineItem key={item.Id} item={item} />
+      <SingleLineItem key={item.Id} item={item} buildCartPage={this.buildCartPage} />
     ));
     return (
       <div>
@@ -98,12 +112,15 @@ class ShoppingCart extends React.Component {
                   <th>Price Per Unit</th>
                   <th>Quantity</th>
                   <th>Subtotal</th>
+                  <th>Remove?</th>
                 </tr>
               </thead>
               {buildLineItems()}
             </Table>
           </div>
-          <button type="submit" className="cart" onClick={this.addToCart}>Continue Shopping</button>
+          <div className="pb-5 pt-3">
+                <Link to='/products'><button className="cart">Continue Shopping</button></Link>
+              </div>
           <button type="submit" className="place-order" onClick={this.addToCart}>Checkout</button>
           </div>
       }

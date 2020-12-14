@@ -28,6 +28,16 @@ namespace WackyPurseHunt.Controllers
             return Ok(allorders);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetOrderById(int id)
+        {
+            if (_orderRepo.GetOrderById(id) == null) return NotFound("We could not find this order. Please enter a valid order ID.");
+
+            var selectedOrder = _orderRepo.GetOrderByIdWithLineItems(id);
+
+            return Ok(selectedOrder);
+        }
+
         // #1 method for getting the cart!!! in ordersData.js
         [HttpGet("cartByUid")]
         public IActionResult GetCart()
@@ -60,6 +70,20 @@ namespace WackyPurseHunt.Controllers
             var newCart = _orderRepo.CreateShoppingCart(currentUserId);
             return Created($"/api/orders/cart/{newCart.Id}", newCart);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateOrder(int id, Order order)
+        {
+            var updatedOrder = _orderRepo.Update(id, order);
+
+            if (_orderRepo.GetOrderById(id) == null)
+            {
+                return NotFound("We could not find an order with this ID. Please try again.");
+            }
+
+            return Ok(updatedOrder);
+        }
+
 
     }
 }
