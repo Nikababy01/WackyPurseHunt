@@ -5,8 +5,11 @@ import productOrdersData from '../../../helpers/data/productOrdersData';
 import './SingleLineItem.scss';
 
 class SingleLineItem extends React.Component {
-  state = {
-    selectedLineItemId: this.props.item.id,
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedLineItemId: this.props.item.id,
+    };
   }
 
   static propTypes = {
