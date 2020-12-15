@@ -22,7 +22,33 @@ namespace WackyPurseHunt.Controllers
             _orderRepo = new OrderRepository();
             _productOrderWithInfoRepo = new ProductOrderWithProductInfoRepository();
         }
+        [HttpGet]
+        public IActionResult GetAllProductOrders()
+        {
+            var allProductOrdersEver = _productOrderRepo.GetAllProductOrders();
+            return Ok(allProductOrdersEver);
+        }
 
+        [HttpGet("inorder/{orderId}")]
+        public IActionResult GetItemsInSingleOrder(int orderId)
+        {
+            if (_orderRepo.GetOrderById(orderId) == null) return NotFound("We could not find this order. Please enter a valid order ID.");
+
+            var allItemsInSingleOrder = _productOrderRepo.GetProductOrdersByOrderId(orderId);
+
+            return Ok(allItemsInSingleOrder);
+        }
+
+        // added another method for getting line items for a single order that also filters results by status:
+        [HttpGet("inorder/{orderId}/{isActive}")]
+        public IActionResult GetItemsInSingleOrder(int orderId, bool isActive)
+        {
+            if (_orderRepo.GetOrderById(orderId) == null) return NotFound("We could not find this order. Please enter a valid order ID.");
+
+            var allItemsInSingleOrder = _productOrderRepo.GetProductOrdersByOrderIdAndByStatus(orderId, isActive);
+
+            return Ok(allItemsInSingleOrder);
+        }
         [HttpPost("newOrder")]
         public IActionResult CreateProductOrder(ProductOrder newLineItem)
         {

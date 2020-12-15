@@ -14,6 +14,34 @@ namespace WackyPurseHunt.Data
 
         const string _connectionString = "Server=localhost;Database= WackyPurseHunt;Trusted_Connection=True";
 
+        // Get all product orders - more just for testing purposes:
+        public IEnumerable<ProductOrder> GetAllProductOrders()
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sqlQuery = "select * from ProductOrders";
+            var allProductOrders = db.Query<ProductOrder>(sqlQuery);
+            return allProductOrders;
+        }
+
+        // Get product orders for a specific order - what we will actually use functionally:
+        public IEnumerable<ProductOrder> GetProductOrdersByOrderId(int orderId)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sqlQuery = "select * from ProductOrders where OrderId = @orderId";
+            var parameters = new { orderId };
+            var itemsInOrder = db.Query<ProductOrder>(sqlQuery, parameters);
+            return itemsInOrder;
+        }
+
+        // Adding  version of getting all line items by their status - we will probably use this to get all active/not-deleted line items for an order:
+        public IEnumerable<ProductOrder> GetProductOrdersByOrderIdAndByStatus(int orderId, bool isActive)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sqlQuery = "select * from ProductOrders where OrderId = @orderId and IsActive = @isActive";
+            var parameters = new { orderId, isActive };
+            var itemsInOrder = db.Query<ProductOrder>(sqlQuery, parameters);
+            return itemsInOrder;
+        }
         // we can use this for validation purposes: 
         public ProductOrder GetSingleItemInOrderById(int id)
         {

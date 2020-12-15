@@ -81,6 +81,23 @@ class ShoppingCart extends React.Component {
     this.buildCartPage();
   }
 
+  createCart = (e) => {
+    e.preventDefault();
+    const {
+      cart,
+      userId,
+    } = this.state;
+    ordersData.createCart()
+      .then((newOrderResponse) => {
+        console.error('createcart newOrderResponse', newOrderResponse);
+        this.setState({
+          cart: newOrderResponse.data,
+          lineItems: [],
+        });
+      })
+      .catch((error) => console.error('Unable to create the new shopping cart.', error));
+  }
+
   render() {
     const {
       cart,

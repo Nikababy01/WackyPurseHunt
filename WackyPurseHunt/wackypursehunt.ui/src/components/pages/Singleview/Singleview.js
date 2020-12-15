@@ -10,14 +10,17 @@ import productOrdersData from '../../../helpers/data/productOrdersData';
 class Singleview extends React.Component {
   state = {
     selectedProduct: {},
-    selectedProductId: this.props.match.params.id,
-    customerId: 0,
+    selectedProductId: this.props.match.params.id, // we may need to move this to props when we do the product cards and pass down the id of the card selected ...
+    userId: 0,
     uid: '',
     cart: {},
     lineItems: [],
-    productQuantityOnSingleview: 1,
+    productQuantityOnSingleView: 1,
+    previousQuantityInCart: 0,
+    newproductQuantityForCart: 0,
     productInCart: false,
-
+    relatedLineItemId: 0,
+    relatedLineItem: {},
   }
 
  buildSingleView = () => {
@@ -31,24 +34,24 @@ class Singleview extends React.Component {
      .catch((err) => console.error('unable to get single product: ', err));
  }
 
- getCartOrder = () => {
+ getCart = () => {
    const {
      cart,
-     customerId,
+     userId,
      uid,
      lineItems,
      selectedProductId,
      productInCart,
      productQuantityOnSingleView,
-     //  newproductQuantityForCart,
-     //  previousQuantityInCart,
-     //  relatedLineItemId,
-     //  relatedLineItem,
+     newproductQuantityForCart,
+     previousQuantityInCart,
+     relatedLineItemId,
+     relatedLineItem,
    } = this.state;
    // const loggedUserUid = authData.getUid();
    ordersData.getCart()
      .then((orderResponse) => {
-       if (orderResponse.status === 200) {
+       if (orderResponse.status == 200) {
          this.setState({
            cart: orderResponse.data,
            lineItems: orderResponse.data.lineItems,
@@ -56,10 +59,10 @@ class Singleview extends React.Component {
          console.error('line items', this.state.lineItems);
          for (let i = 0; i < orderResponse.data.lineItems.length; i += 1) {
            if (orderResponse.data.lineItems[i].productId === this.state.selectedProductId) {
+             this.setState({ previousQuantityInCart: orderResponse.data.lineItems[i].qty });
              this.setState({ productInCart: true });
-             //  this.setState({ previousQuantityInCart: orderResponse.data.lineItems[i].qty });
-             //  this.setState({ relatedLineItemId: orderResponse.data.lineItems[i].id });
-             //  this.setState({ relatedLineItem: orderResponse.data.lineItems[i] });
+             this.setState({ relatedLineItemId: orderResponse.data.lineItems[i].id });
+             this.setState({ relatedLineItem: orderResponse.data.lineItems[i] });
            }
          }
        } else {
@@ -75,78 +78,117 @@ class Singleview extends React.Component {
  componentDidMount() {
    const {
      selectedProductId,
-     selectedProduct,
-     customerId,
+     userId,
      uid,
-     productQuantityOnSingleview,
-     //  previousQuantityInCart,
-     //  newProductQuantityForCart,
+     productQuantityOnSingleView,
+     previousQuantityInCart,
+     newProductQuantityForCart,
      productInCart,
    } = this.state;
-   const loggedCustomerUid = authData.getUid();
-   this.setState({ uid: loggedCustomerUid });
-   if (loggedCustomerUid !== '') {
-     this.getCartOrder(loggedCustomerUid);
+   const loggedUserUid = authData.getUid();
+   this.setState({ uid: loggedUserUid });
+   if (loggedUserUid != '') {
+     this.getCart(loggedUserUid);
    }
    this.buildSingleView(selectedProductId);
  }
 
- changeproductQuantityOnSingleView = (e) => {
-   e.preventDefault();
-   const {
-     productQuantityOnSingleView,
-     // previousQuantityInCart,
-     // newProductQuantityForCart,
-   } = this.state;
-   this.setState({ productQuantityOnSingleView: e.target.value * 1 });
-   // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
- }
+changeproductQuantityOnSingleView = (e) => {
+  e.preventDefault();
+  const {
+    productQuantityOnSingleView,
+    previousQuantityInCart,
+    newProductQuantityForCart,
+  } = this.state;
+  this.setState({ productQuantityOnSingleView: e.target.value * 1 });
+  // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
+}
 
- addToCart = (e) => {
-   e.preventDefault();
-   const {
-     cart,
-     customerId,
-     selectedProduct,
-     selectedProductId,
-     productQuantityOnSingleview,
-     productInCart,
-   } = this.state;
+addToCart = (e) => {
+  e.preventDefault();
+  const {
+    cart,
+    userId,
+    selectedProduct,
+    selectedProductId,
+    productQuantityOnSingleView,
+    productInCart,
+    newProductQuantityForCart,
+    relatedLineItemId,
+    relatedLineItem,
+  } = this.state;
+  if (cart == null) {
+    const newOrder = { totalPrice: selectedProduct.price };
+    ordersData.postOrder(newOrder)
+      .then((newOrderResponse) => {
+        this.setState({
+          cart: newOrderResponse.data,
+          lineItems: [],
+        });
+        const orderId = newOrderResponse.data.id;
+        const productId = this.state.selectedProductId;
+        const newProductOrder = {
+          productId,
+          orderId,
+          qty: this.state.productQuantityOnSingleView,
+          isActive: true,
+          title: '',
+          price: 0,
+          subtotal: 0,
+        };
+        productOrdersData.postProductOrder(newProductOrder)
+          .then((productOrderResponse) => {
+            const brandNewLineItem = productOrderResponse.data;
+            const currentCart = this.state.cart;
+            currentCart.lineItems.push(productOrderResponse.data);
+            this.setState({ cart: currentCart });
+            this.props.history.push('/cart');
+          });
+      })
+      .catch((error) => console.error('Unable to create the new shopping cart.', error));
+    // below is the scenario if a cart already exists!
+  } else {
+    const orderId = this.state.cart.id;
+    console.error('order id for creating line item for existing cart', orderId);
+    const productId = this.state.selectedProductId;
+    const isActive = this.state.relatedLineItem;
+    this.setState({ newProductQuantityForCart: this.state.productQuantityOnSingleView + this.state.previousQuantityInCart });
+    const updatedProductOrder = {
+      productId: this.state.relatedLineItem.productId,
+      orderId: this.state.relatedLineItem.orderId,
+      qty: (this.state.productQuantityOnSingleView + this.state.previousQuantityInCart),
+      isActive: this.state.relatedLineItem.isActive,
+      // title: '',
+      // price: 0,
+      // subtotal: 0,
+    };
+    if (this.state.productInCart === true) {
+      productOrdersData.updateProductOrder(this.state.relatedLineItemId, updatedProductOrder)
+        .then((updatedLineItemResponse) => {
+          // this.setState({ productInCart: true });
+          this.props.history.push('/cart');
+        })
+      // productOrdersData.updateProductOrderBasedOnProductAndOrderIds(productId, orderId, (this.state.productQuantityOnSingleView + this.state.previousQuantityInCart))
+      //   .then((updatedLineItemResponse) => {
+      //     this.setState({ productInCart: true });
+      //     this.props.history.push('/cart');
+      //   })
+        .catch((error) => console.error('Could not update quantity for this line item.', error));
+    } else if (productInCart === false) {
+      productOrdersData.postProductOrderBasedOnProductAndOrderIds(productId, orderId, this.state.productQuantityOnSingleView)
+        .then((newLineItemResponse) => {
+          this.props.history.push('/cart');
+        })
+        .catch((error) => console.error('Could not create a new line item!', error));
+    }
+  }
+}
 
-   const newOrder = { totalPrice: selectedProduct.price };
-   ordersData.postOrder(newOrder)
-     .then((newOrderResponse) => {
-       this.setState({
-         cart: newOrderResponse.data,
-         lineItems: [],
-       });
-       const orderId = newOrderResponse.data.id;
-       const productId = this.state.selectedProductId;
-       const newProductOrder = {
-         productId,
-         orderId,
-         qty: this.state.productQuantityOnSingleview,
-         isActive: true,
-         title: '',
-         price: 0,
-         subtotal: 0,
-       };
-       productOrdersData.postProductOrder(newProductOrder)
-         .then((productOrderResponse) => {
-           const currentCart = this.state.cart;
-           currentCart.lineItems.push(productOrderResponse.data);
-           this.setState({ cart: currentCart });
-           this.props.history.push('/cart');
-         });
-     })
-     .catch((error) => console.error('Unable to create second catch the new shopping cart.', error));
- }
-
- render() {
-   const { selectedProduct, productQuantityOnSingleview } = this.state;
-   // const { authed, product } = this.props;
-   console.error('singleview', selectedProduct);
-   return (
+render() {
+  const { selectedProduct, productQuantityOnSingleview } = this.state;
+  // const { authed, product } = this.props;
+  console.error('singleview', selectedProduct);
+  return (
       <div>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
@@ -161,7 +203,7 @@ class Singleview extends React.Component {
         <p className="price">Price: ${selectedProduct.price}.00</p>
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
-        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
+        <input id="product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
         <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
         </div>
       </div>
@@ -171,7 +213,7 @@ class Singleview extends React.Component {
       </div>
   }
 </div>
-   );
- }
+  );
+}
 }
 export default Singleview;
