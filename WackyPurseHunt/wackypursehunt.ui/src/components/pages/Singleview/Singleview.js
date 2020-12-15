@@ -79,7 +79,7 @@ class Singleview extends React.Component {
    const {
      selectedProductId,
      selectedProduct,
-     customerId,
+     userId,
      uid,
      productQuantityOnSingleview,
      previousQuantityInCart,
@@ -94,7 +94,7 @@ class Singleview extends React.Component {
    this.buildSingleView(selectedProductId);
  }
 
- changeproductQuantityOnSingleView = (e) => {
+ changeProductQuantityOnSingleView = (e) => {
    e.preventDefault();
    const {
      productQuantityOnSingleView,
@@ -119,6 +119,7 @@ class Singleview extends React.Component {
      relatedLineItem,
    } = this.state;
    if (cart == null) {
+     console.error('selectedproduct', selectedProduct);
      const newOrder = { totalPrice: selectedProduct.price };
      ordersData.postOrder(newOrder)
        .then((newOrderResponse) => {
@@ -195,7 +196,7 @@ class Singleview extends React.Component {
         <p className="price">Price: ${selectedProduct.price}.00</p>
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
-        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
+        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeProductQuantityOnSingleView}/>
         <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
         </div>
       </div>

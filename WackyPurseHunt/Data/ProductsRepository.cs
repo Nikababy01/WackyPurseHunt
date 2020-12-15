@@ -52,7 +52,7 @@ namespace WackyPurseHunt.Data
         public List<Product> GetProductsbyTheme(int productThemeId)
         {
             using var db = new SqlConnection(_connectionString);
-            var sql = @"select p.Id, p.ProductThemeId
+            var sql = @"select*
                        from Products p
                        where p.ProductThemeId = @productThemeId";
                       var parameters = new { productThemeId = productThemeId };

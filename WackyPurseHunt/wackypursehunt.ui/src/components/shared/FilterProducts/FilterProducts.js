@@ -22,7 +22,7 @@ class FilterProducts extends React.Component {
           <div className="col-md-4">
           <label>Sort by Color</label>
             <select className="form-control" value={this.props.sortColor}
-            onChange={this.props.handleChangesortColor}>
+            onChange={this.handleChangesortColor}>
               <option value="">Select A Color</option>
               <option value="black">Styles in Black</option>
               <option value="red">Styles in Red</option>
