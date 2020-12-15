@@ -8,6 +8,7 @@ class Products extends React.Component {
   state = {
     products: [],
     theme: '',
+    sortColor: '',
     active: false,
   };
 
@@ -19,13 +20,33 @@ class Products extends React.Component {
   }
 
   handleChangetheme = (e) => {
-    this.setState({ theme: e.target.value });
-    console.log(this.state.theme);
-    productsData.getProductsByTheme((this.state.theme))
-      .then((results) => {
-        console.log(results);
-        this.setState({ products: results });
-      });
+    this.setState({ theme: e.target.value }, () => {
+      productsData.getProductsByTheme((this.state.theme))
+        .then((results) => {
+          this.setState({ products: results.data });
+        })
+        .catch((error) => console.error('unable to get themes', error));
+    });
+  }
+
+  handleChangesortColor = (e) => {
+    this.setState({ sortColor: e.target.value }, () => {
+      productsData.getProductsByColor((this.state.sortColor))
+        .then((results) => {
+          this.setState({ products: results.data });
+        })
+        .catch((error) => console.error('unable to get colors', error));
+    });
+  }
+
+  handleChangesortSize = (e) => {
+    this.setState({ sortSize: e.target.value }, () => {
+      productsData.getProductsBySize((this.state.sortSize))
+        .then((results) => {
+          this.setState({ products: results.data });
+        })
+        .catch((error) => console.error('unable to get sizes', error));
+    });
   }
 
   render() {
@@ -37,8 +58,10 @@ class Products extends React.Component {
         <div className="d-flex flex-wrap">
         <FilterProducts theme={this.state.theme}
           sortColor={this.state.sortColor}
+          sortSize={this.state.sortSize}
           handleChangetheme={this.handleChangetheme}
           handleChangesortColor={this.handleChangesortColor}
+          handleChangesortSize={this.handleChangesortSize}
           count={this.state.products.length}
           />
           </div>
