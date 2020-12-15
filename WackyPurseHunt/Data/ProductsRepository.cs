@@ -52,7 +52,7 @@ namespace WackyPurseHunt.Data
         public List<Product> GetProductsbyTheme(int productThemeId)
         {
             using var db = new SqlConnection(_connectionString);
-            var sql = @"select p.Id, p.ProductThemeId
+            var sql = @"select*
                        from Products p
                        where p.ProductThemeId = @productThemeId";
                       var parameters = new { productThemeId = productThemeId };
@@ -60,6 +60,31 @@ namespace WackyPurseHunt.Data
             var selectedTheme = db.Query<Product>(sql, parameters);
            return selectedTheme.ToList();
           
+        }
+        public List<Product> GetProductsByColor(string color)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"select*
+                       from Products p
+                       where p.Color = @color";
+            var parameters = new { color = color };
+
+            var selectedColor = db.Query<Product>(sql, parameters);
+            return selectedColor.ToList();
+
+        }
+
+        public List<Product> GetProductsBySize(string size)
+        {
+            using var db = new SqlConnection(_connectionString);
+            var sql = @"select*
+                       from Products p
+                       where p.Size = @size";
+            var parameters = new { size = size };
+
+            var selectedSize = db.Query<Product>(sql, parameters);
+            return selectedSize.ToList();
+
         }
     }
 }

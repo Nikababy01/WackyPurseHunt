@@ -51,6 +51,30 @@ namespace WackyPurseHunt.Controllers
             return Ok(productTheme);
         }
 
+        // #3 this goes with GetProductsbyColor
+        [HttpGet("colorCode/{color}")]
+
+        public IActionResult GetProductByColor (string color)
+        {
+            var productColor = _productsRepo.GetProductsByColor(color);
+
+            if (productColor == null) return NotFound("Nothing was found with this id! Try again.");
+
+            return Ok(productColor);
+        }
+
+        // #3 this goes with GetProductsbySizes
+        [HttpGet("sizes/{size}")]
+
+        public IActionResult GetProductBySize(string size)
+        {
+            var productSize = _productsRepo.GetProductsBySize(size);
+
+            if (productSize == null) return NotFound("Nothing was found with this id! Try again.");
+
+            return Ok(productSize);
+        }
+
         [HttpGet("Top")]
         public IActionResult GetProductsTopFive()
         {
