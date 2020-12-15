@@ -62,7 +62,7 @@ namespace WackyPurseHunt.Data
             return selectedLineItem;
         }
 
-
+        // brand new order
         public ProductOrder AddProductOrder(ProductOrder newLineItem)
         {
             var sqlInsert = @"INSERT INTO [dbo].[ProductOrders]

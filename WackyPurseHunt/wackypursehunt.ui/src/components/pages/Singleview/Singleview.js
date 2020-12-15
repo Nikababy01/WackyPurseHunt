@@ -102,6 +102,8 @@ class Singleview extends React.Component {
      newProductQuantityForCart,
    } = this.state;
    this.setState({ productQuantityOnSingleView: e.target.value * 1 });
+   console.error('quantity', this.state.productQuantityOnSingleView);
+   console.error('target quantity', e.target.value * 1);
    // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
  }
 
@@ -121,28 +123,33 @@ class Singleview extends React.Component {
    if (cart == null) {
      console.error('selectedproduct', selectedProduct);
      const newOrder = { totalPrice: selectedProduct.price };
+     console.error('neworder', newOrder);
      ordersData.postOrder(newOrder)
        .then((newOrderResponse) => {
          this.setState({
            cart: newOrderResponse.data,
            lineItems: [],
          });
+         console.error('neworderResponse', newOrderResponse);
          const orderId = newOrderResponse.data.id;
          const productId = this.state.selectedProductId;
          const newProductOrder = {
            productId,
            orderId,
-           qty: this.state.productQuantityOnSingleView,
+           qty: 1,
            isActive: true,
            title: '',
            price: 0,
            subtotal: 0,
          };
+         console.error('newproductorder', newProductOrder);
          productOrdersData.postProductOrder(newProductOrder)
            .then((productOrderResponse) => {
              const currentCart = this.state.cart;
              currentCart.lineItems.push(productOrderResponse.data);
              this.setState({ cart: currentCart });
+             console.error('current cart', currentCart);
+             console.error('productorderResponse', productOrderResponse);
              this.props.history.push('/cart');
            });
        })
@@ -196,7 +203,7 @@ class Singleview extends React.Component {
         <p className="price">Price: ${selectedProduct.price}.00</p>
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
-        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeProductQuantityOnSingleView}/>
+        <input id="product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeProductQuantityOnSingleView}/>
         <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
         </div>
       </div>

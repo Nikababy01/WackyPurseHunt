@@ -19,14 +19,13 @@ class Products extends React.Component {
   }
 
   handleChangetheme = (e) => {
-    this.setState({ theme: e.target.value });
-    console.log('mytheme', this.state.theme);
-    productsData.getProductsByTheme((this.state.theme))
-      .then((results) => {
-        console.log('myresults', results);
-        this.setState({ products: results.data });
-      })
-      .catch((error) => console.error('unable to get themes', error));
+    this.setState({ theme: e.target.value }, () => {
+      productsData.getProductsByTheme((this.state.theme))
+        .then((results) => {
+          this.setState({ products: results.data });
+        })
+        .catch((error) => console.error('unable to get themes', error));
+    });
   }
 
   render() {
