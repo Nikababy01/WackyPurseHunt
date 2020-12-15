@@ -5,9 +5,11 @@ const postProductOrder = (newProductOrder) => axios.post(`${baseUrl}/lineitems/n
 const updateProductOrder = (id, updatedProductOrder) => axios.put(`${baseUrl}/lineitems/${id}`, updatedProductOrder);
 
 const postProductOrderBasedOnProductAndOrderIds = (productId, orderId, qty) => axios.post(`${baseUrl}/lineitems/${productId}/${orderId}/${qty}`);
+const updateProductOrderBasedOnProductAndOrderIds = (productId, orderId, newQuantity) => axios.put(`${baseUrl}/lineitems/${productId}/${orderId}/${newQuantity}`);
 
 export default {
   postProductOrder,
   postProductOrderBasedOnProductAndOrderIds,
   updateProductOrder,
+  updateProductOrderBasedOnProductAndOrderIds,
 };
