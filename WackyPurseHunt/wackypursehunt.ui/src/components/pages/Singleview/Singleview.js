@@ -15,7 +15,7 @@ class Singleview extends React.Component {
     uid: '',
     cart: {},
     lineItems: [],
-    productQuantityOnSingleview: 1,
+    productQuantityOnSingleview: '',
     productInCart: false,
 
   }
@@ -26,7 +26,7 @@ class Singleview extends React.Component {
      .then((response) => this.setState({
        selectedProduct: response.data,
        selectedProductId: response.data.id,
-       productQuantityOnSingleview: 1,
+       productQuantityOnSingleview: '',
      }))
      .catch((err) => console.error('unable to get single product: ', err));
  }
@@ -92,14 +92,8 @@ class Singleview extends React.Component {
  }
 
  changeproductQuantityOnSingleView = (e) => {
-   e.preventDefault();
-   const {
-     productQuantityOnSingleView,
-     // previousQuantityInCart,
-     // newProductQuantityForCart,
-   } = this.state;
+   console.error('clicked changeprod');
    this.setState({ productQuantityOnSingleView: e.target.value * 1 });
-   // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
  }
 
  addToCart = (e) => {
@@ -144,8 +138,8 @@ class Singleview extends React.Component {
 
  render() {
    const { selectedProduct, productQuantityOnSingleview } = this.state;
-   // const { authed, product } = this.props;
-   console.error('singleview', selectedProduct);
+
+   console.error('singleview qty', productQuantityOnSingleview);
    return (
       <div>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
@@ -160,8 +154,10 @@ class Singleview extends React.Component {
         <p className="product-title">{selectedProduct.title}</p>
         <p className="price">Price: ${selectedProduct.price}.00</p>
         <p className="desc">{selectedProduct.description}</p>
-        <label htmlFor="product-quantity">Quantity</label>
-        <input id= "product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
+        <label htmlFor="product-quantity"><b>Quantity:</b></label>
+        <input id="product-quantity" className="qty-input"
+         type="text" value={this.state.productQuantityOnSingleView}
+         onChange={this.changeproductQuantityOnSingleView} placeholder= '1' />
         <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
         </div>
       </div>

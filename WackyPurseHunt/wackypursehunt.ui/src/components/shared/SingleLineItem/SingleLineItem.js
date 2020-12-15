@@ -33,7 +33,7 @@ class SingleLineItem extends React.Component {
       imageUrl: this.props.item.imageUrl,
     };
     productOrdersData.updateProductOrder(selectedLineItemId, updatedLineItem)
-      .then(() => {
+      .then((response) => {
         this.props.buildCartPage();
       })
       .catch((error) => console.error('Unable to save changes to the line item.', error));

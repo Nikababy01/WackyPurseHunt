@@ -42,7 +42,7 @@ class ShoppingCart extends React.Component {
   getCart = () => {
     const {
       cart,
-      userId,
+      customerId,
       uid,
       lineItems,
       // validOrder,
@@ -55,6 +55,7 @@ class ShoppingCart extends React.Component {
             cart: cartResponse.data,
             cartId: cartResponse.data.id,
             lineItems: cartResponse.data.lineItems,
+            customerId: cartResponse.data.customerId,
           });
         } else {
           this.setState({
