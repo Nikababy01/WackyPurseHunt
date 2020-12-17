@@ -329,8 +329,8 @@ class ShoppingCart extends React.Component {
                     Select a payment type
                     </DropdownToggle>
                       <DropdownMenu>
+                        <DropdownItem key='newCard' value='newCard' onClick={this.addNewPaymentType}>Enter Credit Card Information</DropdownItem>
                       {buildPaymentTypes()}
-                        <DropdownItem key='newCard' value='newCard' onClick={this.addNewPaymentType}>Add Credit Card Information</DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
             </div>

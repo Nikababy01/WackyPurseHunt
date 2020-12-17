@@ -10,13 +10,13 @@ import {
 import './App.scss';
 
 import MyNavbar from '../components/shared/MyNavbar/MyNavbar';
-import Footer from '../components/shared/Footer/Footer';
-import Home from '../components/pages/Home/Home';
 import Login from '../components/pages/Login/Login';
+import Home from '../components/pages/Home/Home';
 import Register from '../components/pages/Register/Register';
 import ShoppingCart from '../components/pages/ShoppingCart/ShoppingCart';
 import Products from '../components/pages/Products/Products';
 import Singleview from '../components/pages/Singleview/Singleview';
+import Footer from '../components/shared/Footer/Footer';
 import fbConnection from '../helpers/data/connection';
 
 fbConnection();

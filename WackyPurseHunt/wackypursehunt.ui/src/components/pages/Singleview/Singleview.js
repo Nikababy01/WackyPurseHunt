@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import productsData from '../../../helpers/data/productsData';
@@ -50,7 +51,7 @@ class Singleview extends React.Component {
    } = this.state;
    ordersData.getCart()
      .then((orderResponse) => {
-       if (orderResponse.status == 200) {
+       if (orderResponse.status === 200) {
          this.setState({
            cart: orderResponse.data,
            lineItems: orderResponse.data.lineItems,
@@ -85,7 +86,7 @@ class Singleview extends React.Component {
    } = this.state;
    const loggedUserUid = authData.getUid();
    this.setState({ uid: loggedUserUid });
-   if (loggedUserUid != '') {
+   if (loggedUserUid !== '') {
      this.getCart(loggedUserUid);
    }
    this.buildSingleView(selectedProductId);
@@ -173,7 +174,6 @@ addToCart = (e) => {
 
 render() {
   const { selectedProduct, productQuantityOnSingleview } = this.state;
-  console.error('singleview', selectedProduct);
   return (
       <div>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>

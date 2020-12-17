@@ -17,9 +17,7 @@ class SingleLineItem extends React.Component {
   }
 
   inactivateLineItem = (e) => {
-    console.error('deleting line item', this.props);
     const { selectedLineItemId } = this.state;
-    console.error('id to delete', selectedLineItemId);
     const updatedLineItem = {
       id: this.props.item.id,
       productId: this.props.item.productId,
@@ -40,7 +38,6 @@ class SingleLineItem extends React.Component {
 
   render() {
     const { item } = this.props;
-    console.error('item', item);
     return (
           <tbody>
             <tr>
