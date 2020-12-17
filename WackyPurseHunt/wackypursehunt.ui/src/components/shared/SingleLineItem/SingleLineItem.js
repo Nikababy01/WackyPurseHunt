@@ -17,7 +17,6 @@ class SingleLineItem extends React.Component {
   }
 
   inactivateLineItem = (e) => {
-    // e.preventDefault();
     console.error('deleting line item', this.props);
     const { selectedLineItemId } = this.state;
     console.error('id to delete', selectedLineItemId);

@@ -12,7 +12,7 @@ namespace WackyPurseHunt.Models
         public int CustomerId { get; set; }
         public int AccountNo { get; set; }
         public int ExpirationYear { get; set; }
-        public int ExperationMonth { get; set; }
+        public int ExpirationMonth { get; set; }
         public int CCV { get; set; }
         public bool IsActive { get; set; } = true;
 

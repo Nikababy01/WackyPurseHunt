@@ -2,6 +2,15 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import 'variables';
 
+
 body {
   background-color: $favColor;
+}
+
+.newBlock {
+  height: inherit !important;
+}
+
+.alignLeft {
+  text-align: left;
 }
