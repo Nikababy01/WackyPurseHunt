@@ -10,7 +10,7 @@ import productOrdersData from '../../../helpers/data/productOrdersData';
 class Singleview extends React.Component {
   state = {
     selectedProduct: {},
-    selectedProductId: this.props.match.params.id, // we may need to move this to props when we do the product cards and pass down the id of the card selected ...
+    selectedProductId: this.props.match.params.id,
     userId: 0,
     uid: '',
     cart: {},
@@ -48,7 +48,6 @@ class Singleview extends React.Component {
      relatedLineItemId,
      relatedLineItem,
    } = this.state;
-   // const loggedUserUid = authData.getUid();
    ordersData.getCart()
      .then((orderResponse) => {
        if (orderResponse.status == 200) {
@@ -56,7 +55,6 @@ class Singleview extends React.Component {
            cart: orderResponse.data,
            lineItems: orderResponse.data.lineItems,
          });
-         console.error('line items', this.state.lineItems);
          for (let i = 0; i < orderResponse.data.lineItems.length; i += 1) {
            if (orderResponse.data.lineItems[i].productId === this.state.selectedProductId) {
              this.setState({ previousQuantityInCart: orderResponse.data.lineItems[i].qty });
@@ -101,7 +99,6 @@ changeproductQuantityOnSingleView = (e) => {
     newProductQuantityForCart,
   } = this.state;
   this.setState({ productQuantityOnSingleView: e.target.value * 1 });
-  // this.setState({ productQuantityOnSingleView: e.target.value * 1, newProductQuantityForCart: (this.state.previousQuantityInCart + (e.target.value * 1)) });
 }
 
 addToCart = (e) => {
@@ -149,7 +146,6 @@ addToCart = (e) => {
     // below is the scenario if a cart already exists!
   } else {
     const orderId = this.state.cart.id;
-    console.error('order id for creating line item for existing cart', orderId);
     const productId = this.state.selectedProductId;
     const isActive = this.state.relatedLineItem;
     this.setState({ newProductQuantityForCart: this.state.productQuantityOnSingleView + this.state.previousQuantityInCart });
@@ -158,21 +154,12 @@ addToCart = (e) => {
       orderId: this.state.relatedLineItem.orderId,
       qty: (this.state.productQuantityOnSingleView + this.state.previousQuantityInCart),
       isActive: this.state.relatedLineItem.isActive,
-      // title: '',
-      // price: 0,
-      // subtotal: 0,
     };
     if (this.state.productInCart === true) {
       productOrdersData.updateProductOrder(this.state.relatedLineItemId, updatedProductOrder)
         .then((updatedLineItemResponse) => {
-          // this.setState({ productInCart: true });
           this.props.history.push('/cart');
         })
-      // productOrdersData.updateProductOrderBasedOnProductAndOrderIds(productId, orderId, (this.state.productQuantityOnSingleView + this.state.previousQuantityInCart))
-      //   .then((updatedLineItemResponse) => {
-      //     this.setState({ productInCart: true });
-      //     this.props.history.push('/cart');
-      //   })
         .catch((error) => console.error('Could not update quantity for this line item.', error));
     } else if (productInCart === false) {
       productOrdersData.postProductOrderBasedOnProductAndOrderIds(productId, orderId, this.state.productQuantityOnSingleView)
@@ -186,7 +173,6 @@ addToCart = (e) => {
 
 render() {
   const { selectedProduct, productQuantityOnSingleview } = this.state;
-  // const { authed, product } = this.props;
   console.error('singleview', selectedProduct);
   return (
       <div>

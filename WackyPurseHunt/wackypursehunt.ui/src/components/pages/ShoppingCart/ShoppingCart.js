@@ -1,4 +1,5 @@
 import React from 'react';
+import Swal from 'sweetalert2';
 import {
   Button,
   Collapse,
@@ -15,11 +16,9 @@ import {
   Table,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
-// import { Table } from 'reactstrap';
 
 import SingleLineItem from '../../shared/SingleLineItem/SingleLineItem';
 
-// import authData from '../../../helpers/data/authData';
 import paymentTypesData from '../../../helpers/data/paymentTypesData';
 
 import ordersData from '../../../helpers/data/ordersData';
@@ -56,14 +55,16 @@ class ShoppingCart extends React.Component {
     this.setState({ modal: false });
   }
 
+  toggleDropdown = () => {
+    this.setState({ dropdownOpen: !this.state.dropdownOpen });
+  }
+
   getUser = () => {
     customersData.getSingleCustomerIdByUid()
       .then((userIdReturned) => {
         this.setState({ userId: userIdReturned.data });
-        console.error('userIdReturned', userIdReturned);
         customersData.getSingleCustomer(this.state.userId)
           .then((userResponse) => {
-            console.error('userReponse', userResponse);
             this.setState({
               user: userResponse.data,
             });
@@ -84,7 +85,6 @@ class ShoppingCart extends React.Component {
     } = this.state;
     ordersData.getCart()
       .then((cartResponse) => {
-        console.error('cartResponse', cartResponse);
         if (cartResponse.status === 200) {
           this.setState({
             cart: cartResponse.data,
@@ -95,7 +95,6 @@ class ShoppingCart extends React.Component {
           if (paymentTypeId != null) {
             paymentTypesData.getSinglePaymentType(this.state.paymentTypeId)
               .then((paymentTypeResponse) => {
-                console.error('paymenttypeinfo', paymentTypeResponse);
                 this.setState({
                   selectedPaymentType: paymentTypeResponse.data,
                   paymentOption: paymentTypeResponse.data.paymentOption,
@@ -116,8 +115,6 @@ class ShoppingCart extends React.Component {
             validOrder: false,
           });
         }
-        console.error('cart from db', cartResponse);
-        console.error('current cart', this.state.cart);
       })
       .catch((error) => console.error('Unable to get the shopping cart.', error));
   }
@@ -139,7 +136,6 @@ class ShoppingCart extends React.Component {
     } = this.state;
     ordersData.createCart()
       .then((newOrderResponse) => {
-        console.error('createcart newOrderResponse', newOrderResponse);
         this.setState({
           cart: newOrderResponse.data,
           lineItems: [],
@@ -147,6 +143,20 @@ class ShoppingCart extends React.Component {
       })
       .catch((error) => console.error('Unable to create the new shopping cart.', error));
   }
+
+ changeSelectedPaymentType = (e) => {
+   const newlySelectedPaymentTypeRecord = this.state.paymentTypes.filter((x) => x.id === (e.target.value * 1));
+   e.preventDefault();
+   this.setState({
+     paymentTypeId: e.target.value * 1,
+     selectedPaymentType: newlySelectedPaymentTypeRecord[0],
+     paymentOption: newlySelectedPaymentTypeRecord[0].paymentOption,
+     accountNo: newlySelectedPaymentTypeRecord[0].accountNo,
+     expirationMonth: newlySelectedPaymentTypeRecord[0].expirationMonth,
+     expirationYear: newlySelectedPaymentTypeRecord[0].expirationYear,
+     ccv: newlySelectedPaymentTypeRecord[0].ccv,
+   });
+ }
 
   changePaymentType = (e) => {
     e.preventDefault();
@@ -175,21 +185,19 @@ class ShoppingCart extends React.Component {
 
   addNewPaymentType = (e) => {
     e.preventDefault();
-    const newPaymentTypeObject = {
+    const newPaymentType = {
       paymentOption: 'Please enter a payment type.',
-      accountNo: 0,
-      expirationMonth: 0,
-      expirationYear: 0,
-      ccv: 0,
+      accountNo: '',
+      expirationMonth: '',
+      expirationYear: '',
+      ccv: '',
       isActive: true,
       customerId: this.state.userId,
     };
-    paymentTypesData.postPaymentType(newPaymentTypeObject)
+    paymentTypesData.postPaymentType(newPaymentType)
       .then((newPaymentTypeResponse) => {
-        console.error('NEW paymenttypeinfo', newPaymentTypeObject);
-        console.error('NEW paymenttypeinfo', newPaymentTypeResponse);
         this.setState({
-          selectedPaymentType: newPaymentTypeResponse.data,
+          selectedPaymentType: newPaymentTypeResponse.data.id,
           paymentOption: newPaymentTypeResponse.data.paymentOption,
           accountNo: newPaymentTypeResponse.data.accountNo,
           expirationMonth: newPaymentTypeResponse.data.expirationMonth,
@@ -197,6 +205,14 @@ class ShoppingCart extends React.Component {
           ccv: newPaymentTypeResponse.data.ccv,
         });
       });
+  }
+
+  validationAlert = () => {
+    Swal.fire('You must enter all required data. Please see fields marked with an asterisk (*).');
+  }
+
+  successfulPurchaseAlert = () => {
+    Swal.fire('Congratulations! Your order is on its way!');
   }
 
   placeOrder = (e) => {
@@ -220,19 +236,30 @@ class ShoppingCart extends React.Component {
       ccv,
       validOrder,
     } = this.state;
+    const updatedPaymentType = {
+      id: this.state.paymentTypeId.id,
+      paymentOption,
+      customerId: cart.customerId,
+      accountNo,
+      expirationMonth,
+      expirationYear,
+      ccv,
+      isActive,
+    };
+    paymentTypesData.updatePaymentType(selectedPaymentType.id, updatedPaymentType);
     const updatedOrder = {
       id: cartId,
-      customerId: cart.userId,
+      customerId: cart.customerId,
       isCompleted: true,
       totalPrice: cart.totalPrice,
-      paymentTypeId: this.state.selectedPaymentType.id,
+      paymentTypeId: this.state.paymentTypeId,
       purchaseDate: new Date(),
       isActive: cart.isActive,
       lineItems: cart.lineItems,
     };
     ordersData.updateOrder(cartId, updatedOrder)
       .then((updatedOrderResponse) => {
-        console.error('updated order respo', updatedOrderResponse);
+        this.successfulPurchaseAlert();
         this.props.history.push('/products');
       })
       .catch((error) => console.error('We could not finalize your order', error));
@@ -243,6 +270,7 @@ class ShoppingCart extends React.Component {
       cart,
       lineItems,
       user,
+      selectedPaymentType,
       paymentOption,
       accountNo,
       expirationMonth,
@@ -252,9 +280,14 @@ class ShoppingCart extends React.Component {
       dropdownOpen,
       modal,
     } = this.state;
+
     const buildLineItems = () => lineItems.map((item) => (
       <SingleLineItem key={item.Id} item={item} buildCartPage={this.buildCartPage} />
     ));
+    const buildPaymentTypes = () => paymentTypes.map((item) => (
+      <DropdownItem key={item.id} value={item.id} onClick={this.changeSelectedPaymentType}>{item.paymentOption}</DropdownItem>
+    ));
+
     return (
       <div>
       <h1>Your Shopping Cart</h1>
@@ -296,7 +329,8 @@ class ShoppingCart extends React.Component {
                     Select a payment type
                     </DropdownToggle>
                       <DropdownMenu>
-                        <DropdownItem key='newCard' value='newCard' onClick={this.addNewPaymentType}>Place Order</DropdownItem>
+                      {buildPaymentTypes()}
+                        <DropdownItem key='newCard' value='newCard' onClick={this.addNewPaymentType}>Add Credit Card Information</DropdownItem>
                       </DropdownMenu>
                     </Dropdown>
             </div>
@@ -320,7 +354,7 @@ class ShoppingCart extends React.Component {
                 </div>
                 <div className='form-group'>
                   <label htmlFor='paymentCcv'>CCV*</label>
-                  <input className='form-control' id='paymentCcv' placeholder={this.state.ccv} value={ccv} onChange={this.changeCcv} ></input>
+                  <input type='text' className='form-control' id='paymentCcv' placeholder={this.state.ccv} value={ccv} onChange={this.changeCcv} ></input>
                 </div>
               </form>
             </div>

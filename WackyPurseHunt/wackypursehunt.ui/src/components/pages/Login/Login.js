@@ -56,7 +56,6 @@ class Login extends React.Component {
   render() {
     const { user } = this.state;
     const { authed } = this.props;
-    console.error('authed on login??', this.props.authed);
 
     const buildLogButtons = () => {
       if (authed) {
