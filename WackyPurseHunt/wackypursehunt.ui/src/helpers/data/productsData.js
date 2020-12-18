@@ -18,6 +18,10 @@ const getProductsByTheme = (productThemeId) => axios.get(`${baseUrl}/products/th
 const getProductsByColor = (color) => axios.get(`${baseUrl}/products/colorCode/${color}`);
 const getProductsBySize = (size) => axios.get(`${baseUrl}/products/sizes/${size}`);
 
+const createNewProduct = (newProduct) => axios.post(`${baseUrl}/products`, newProduct);
+const updateProduct = (id, updatedProduct) => axios.put(`${baseUrl}/products/${id}`, updatedProduct);
+const removeProduct = (id, productId) => axios.delete(`${baseUrl}/product/${id}/product/${productId}`);
+
 export default {
   getAllProducts,
   getSingleProduct,
@@ -25,4 +29,7 @@ export default {
   getProductsByTheme,
   getProductsByColor,
   getProductsBySize,
+  createNewProduct,
+  updateProduct,
+  removeProduct,
 };

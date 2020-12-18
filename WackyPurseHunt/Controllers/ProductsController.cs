@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WackyPurseHunt.Data;
+using WackyPurseHunt.Models;
 
 namespace WackyPurseHunt.Controllers
 {
@@ -82,5 +83,37 @@ namespace WackyPurseHunt.Controllers
 
             return Ok(topProducts);
         }
+
+        // Post new products
+        [HttpPost]
+        public IActionResult CreateProduct(Product product)
+        {
+            _productsRepo.Add(product);
+
+            return Created($"/api/products/{product.Id}", product);
+        }
+       
+        //// Update existing products
+        //[HttpPut("{id")]
+        //public IActionResult UpdatedProducts(int id, Product product)
+        //{
+        //    var updatedProducts = _productsRepo.Update(id, product);
+        //    return Ok(updatedProducts);
+        //}
+
+        //// Delete Products
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteProduct(int id)
+        //{
+        //    if(_productsRepo.GetProductById(id) == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var selectedProduct = _productsRepo.GetProductById(id);
+        //    _productsRepo.Remove(id);
+
+
+        //    return Ok($"{selectedProduct.Title} has been deleted!");
+        //}
     }
 }
