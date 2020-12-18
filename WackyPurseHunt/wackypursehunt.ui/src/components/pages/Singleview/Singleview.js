@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import productsData from '../../../helpers/data/productsData';
@@ -50,7 +51,7 @@ class Singleview extends React.Component {
    } = this.state;
    ordersData.getCart()
      .then((orderResponse) => {
-       if (orderResponse.status == 200) {
+       if (orderResponse.status === 200) {
          this.setState({
            cart: orderResponse.data,
            lineItems: orderResponse.data.lineItems,
@@ -85,7 +86,7 @@ class Singleview extends React.Component {
    } = this.state;
    const loggedUserUid = authData.getUid();
    this.setState({ uid: loggedUserUid });
-   if (loggedUserUid != '') {
+   if (loggedUserUid !== '') {
      this.getCart(loggedUserUid);
    }
    this.buildSingleView(selectedProductId);
@@ -173,9 +174,20 @@ addToCart = (e) => {
 
 render() {
   const { selectedProduct, productQuantityOnSingleview } = this.state;
-  console.error('singleview', selectedProduct);
+  const { authed, product } = this.props;
+  const buildCartButton = () => {
+    if (authed) {
+      return (
+        <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
+      );
+    }
+    return (
+      <Link to='/login' className="btn btn cart">Please Log In to Add to Cart</Link>
+    );
+  };
+
   return (
-      <div>
+    <div {...this.props}>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
     selectedProduct.isActive
@@ -190,7 +202,7 @@ render() {
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
         <input id="product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
-        <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
+        {buildCartButton()}
         </div>
       </div>
       </div>
