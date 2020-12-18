@@ -48,7 +48,7 @@ render() {
           <NavLink tag={RRNavLink} to='/home'>Home</NavLink>
           </NavItem>
           <NavItem>
-          <NavLink tag={RRNavLink} to='/products'>Products</NavLink>
+          <NavLink tag={RRNavLink} to='/products' authed={authed}>Products</NavLink>
           </NavItem>
           <NavItem>
           <NavLink tag={RRNavLink} to='/cart'>Cart</NavLink>

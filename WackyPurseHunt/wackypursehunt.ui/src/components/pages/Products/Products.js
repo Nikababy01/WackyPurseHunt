@@ -51,6 +51,7 @@ class Products extends React.Component {
 
   render() {
     const { products } = this.state;
+    const { authed } = this.props;
     const buildProductsList = products.map((product) => (
       <ProductCard key={product.id} product={product}/>));
     return (

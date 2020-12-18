@@ -72,7 +72,7 @@ class Login extends React.Component {
         );
       }
       return (
-        <div>
+        <div className="Login" {...this.props}>
         <div className="form-group">
               <label htmlFor="inputEmail" className="col-sm-4 control-label">
                 Email:
@@ -118,7 +118,7 @@ class Login extends React.Component {
       );
     };
     return (
-      <div className="Login">
+      <div className="Login" {...this.props}>
         <div className="box-container">
           <h1 className="text-center"><em>Welcome</em></h1>
         <div id="login-form">

@@ -41,6 +41,9 @@ class App extends React.Component {
   componentDidMount() {
     this.removeListener = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        user.getIdToken()
+        // save the token to the session storage
+          .then((token) => sessionStorage.setItem('token', token));
         this.setState({ authed: true });
       } else {
         this.setState({ authed: false });
@@ -61,14 +64,14 @@ class App extends React.Component {
            <MyNavbar authed={authed}/>
            <div className="container">
              <div className="row">
-               <Switch>
+               <Switch authed={authed}>
                  <Route path='/home' component={Home} authed={authed} />
-                 <Route path='/login' component={Login} authed={authed} />
+                 <Route path='/login' render={(props) => <Login authed={authed} {...props} />} />
                  <Route path='/register' component={Register} />
                  <Route path='/products/:id' render={(props) => <Singleview authed={authed} {...props} />} />
                  <Route path='/products' component={Products} authed={authed} />
                  <Route path='/cart' component={ShoppingCart} authed={authed} />
-                 <Redirect from="*" to="/home"/>
+                 <Redirect from='*' to='/home'/>
                  </Switch>
              </div>
            </div>

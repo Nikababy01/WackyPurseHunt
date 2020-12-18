@@ -174,8 +174,20 @@ addToCart = (e) => {
 
 render() {
   const { selectedProduct, productQuantityOnSingleview } = this.state;
+  const { authed, product } = this.props;
+  const buildCartButton = () => {
+    if (authed) {
+      return (
+        <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
+      );
+    }
+    return (
+      <Link to='/login' className="btn btn cart">Please Log In to Add to Cart</Link>
+    );
+  };
+
   return (
-      <div>
+    <div {...this.props}>
       <Link to='/products' className="return-back"><i className="fas fa-backward"></i>  Back To Products</Link>
     {
     selectedProduct.isActive
@@ -190,7 +202,7 @@ render() {
         <p className="desc">{selectedProduct.description}</p>
         <label htmlFor="product-quantity">Quantity</label>
         <input id="product-quantity" className="qty-input" type="text" value={productQuantityOnSingleview} onChange={this.changeproductQuantityOnSingleView}/>
-        <button type="submit" className="cart" onClick={this.addToCart}>Add to Cart</button>
+        {buildCartButton()}
         </div>
       </div>
       </div>
