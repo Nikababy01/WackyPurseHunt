@@ -9,11 +9,11 @@ class NewArrivalCard extends React.Component {
     const { product } = this.props;
     const singleProductLink = `/products/${product.id}`;
     return (
-      <div className="NewArrivalCard col-2">
+      <div className="NewArrivalCard col-lg-2">
         <div className="card-newArrival">
-          <img className="card-img-top-newArrival" src={product.imageUrl} alt="product card"/>
+        <Link to={singleProductLink} product={product.id}><img className="card-img-top-newArrival" src={product.imageUrl} alt="product card"/></Link>
           <div className="card-body-newArrival">
-            <Link className="btn btn-warning" to={singleProductLink} product={product.id}>{product.title}</Link>
+            <div className="card-title-newArrival">{product.title}</div>
           </div>
         </div>
       </div>

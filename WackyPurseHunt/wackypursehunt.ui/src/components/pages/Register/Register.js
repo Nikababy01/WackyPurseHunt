@@ -119,7 +119,7 @@ class Register extends React.Component {
     return (
       <div className="box-container">
         <h1> Thank You for Shopping With Us</h1>
-           <button type='submit' className="btn btn-success" onClick={this.toggleModal}>Please Signup</button>
+           <button type='submit' className="btn btn-outline-dark" onClick={this.toggleModal}>Please Signup</button>
                     {/* modal with registration below: */}
           <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Please Enter Your Information</ModalHeader>
