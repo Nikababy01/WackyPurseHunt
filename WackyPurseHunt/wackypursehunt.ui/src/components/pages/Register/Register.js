@@ -1,6 +1,21 @@
 import React from 'react';
+import {
+  Button,
+  Collapse,
+  CardBody,
+  Card,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownToggle,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Table,
+} from 'reactstrap';
 import firebase from 'firebase';
-
+import PaymentTypeModal from '../../shared/PaymentTypeModal/PaymentTypeModal';
 // import { Link } from 'react-router-dom';
 import './Register.scss';
 
@@ -18,6 +33,7 @@ class Register extends React.Component {
       cityState: '',
       zipcode: '',
       phoneNumber: '',
+      modal: false,
     },
   }
 
@@ -34,6 +50,14 @@ class Register extends React.Component {
         console.error('there was an error in registering', error);
       });
   };
+
+  toggleModal = () => {
+    this.setState({ modal: !this.setState.modal });
+  }
+
+  closeModal = () => {
+    this.setState({ modal: false });
+  }
 
   firstNameChange = (e) => {
     const tempUser = { ...this.state.user };
@@ -90,12 +114,17 @@ class Register extends React.Component {
   };
 
   render() {
-    const { user } = this.state;
+    const { user, modal } = this.state;
 
     return (
       <div className="box-container">
-          <h1 className="text-center"><em>Please Signup</em></h1>
-
+        <h1> Thank You for Shopping With Us</h1>
+           <button type='submit' className="btn btn-success" onClick={this.toggleModal}>Please Signup</button>
+                    {/* modal with registration below: */}
+          <Modal isOpen={this.state.modal} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Please Enter Your Information</ModalHeader>
+            <ModalBody>
+              <div>
           <form className="form-horizontal col-sm-12 col-sm-offset-3">
           <div className="form-group">
               <label htmlFor="inputFirstName" className="col-sm-4 control-label">
@@ -232,17 +261,15 @@ class Register extends React.Component {
                 />
               </div>
             </div>
-            <div className="form-group mt-15px">
-              <div>
-                <button
-                  className="btn btn-primary text-center"
-                  onClick={this.registerClickEvent}>
-                  SignUp
-                </button>
-              </div>
-            </div>
-          </form>
+           </form>
           </div>
+           </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onClick={this.registerClickEvent}>SignUp</Button>{' '}
+                <Button color="secondary" onClick={this.closeModal}>Close</Button>
+              </ModalFooter>
+            </Modal>
+           </div>
     );
   }
 }
