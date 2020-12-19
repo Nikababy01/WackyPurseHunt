@@ -77,7 +77,7 @@ class App extends React.Component {
            </div>
          </React.Fragment>
          </BrowserRouter>
-         <Footer/>
+         <Footer className="Footer"/>
       </div>
     );
   }
