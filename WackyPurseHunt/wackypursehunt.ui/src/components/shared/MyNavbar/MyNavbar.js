@@ -72,6 +72,7 @@ render() {
           <NavItem>
           <NavLink tag={RRNavLink} to='/register'>Signup</NavLink>
           </NavItem>
+
     </Nav>;
   };
   return (

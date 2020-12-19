@@ -1,5 +1,6 @@
-.Register{
+.Register .body{
   width: 100%;
+  background-image: url(http://www.happyjute.com/wp-content/uploads/2017/03/Embroidery-Bags-background.jpg) !important;
 }
 .box-container{
  display:flex;
@@ -10,6 +11,9 @@
  padding: 24px
 }
 
+.Footer{
+  display:none;
+}
 .inner-container{
  transition: visibility 0.2s ease-out;
  }
