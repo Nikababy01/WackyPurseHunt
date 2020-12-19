@@ -77,9 +77,11 @@ render() {
   };
   return (
     <div className="MyNavbar">
-     <Navbar color="mg-dark" red expand="md" font-size="36px">
-        <NavbarBrand href="/"><img className="logo" src="" alt="logo"></img>Welcome to Wacky Purse Hunt!</NavbarBrand>
-        <p><strong><em>Find your purse!</em></strong></p>
+    <Navbar expand="md">
+        <div className="wph">
+          <NavbarBrand tag={RRNavLink} to="/home" className='ml-3 active'><img className="logo" src="https://wiseabundance.files.wordpress.com/2014/11/messy_purse_clipart.jpg"
+          alt="logo"/>The Wacky Purse Hunt</NavbarBrand>
+        </div>
         <NavbarToggler onClick={this.toggle} />
         <Collapse isOpen={isOpen} navbar>
         {buildNavbar()}

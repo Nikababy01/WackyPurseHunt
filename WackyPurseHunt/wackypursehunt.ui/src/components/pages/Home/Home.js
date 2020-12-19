@@ -23,7 +23,7 @@ class Home extends React.Component {
       <div>
       <div className="jumbotron">
         <div className="jumbotronText">
-          <h1 className="greeting">Thank you for visiting us at Wacky Purse Hunt!</h1>
+          <h1 className="greeting">Thank you for visiting us at The Wacky Purse Hunt!</h1>
           <h2 className='aboutUs'>We are excited to bring the most exotic purses we could find!</h2>
         </div>
       </div>

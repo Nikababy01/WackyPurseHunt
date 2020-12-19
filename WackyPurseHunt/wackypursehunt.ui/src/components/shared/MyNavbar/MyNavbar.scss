@@ -1,4 +1,38 @@
-.MyNavbar{
-background-color: black;
-color: white;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Petit+Formal+Script&display=swap');
+@import '../../../styles/variables'; 
+
+.MyNavbar {
+  background-color: plum;
 }
+
+.NavItem {
+  margin: 0;
+  padding: 0;
+}
+
+.NavList {
+  list-style-type: none;
+}
+
+.wph {
+  font-family: 'Petit Formal Script', cursive;
+  border: 1.5px solid darkmagenta;
+  border-radius: 25px;
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+}
+.logo{
+  height: 55px;
+}
+
+.toggleButton:hover {
+  background-color: rgb(231, 206, 206)
+}
+
+.wph:hover {
+  background-color: rgb(231, 206, 206)
+}
+

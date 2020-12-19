@@ -1,6 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 .Home{
   display: block;
 }
+
+/*-----JumboTron----------*/
+.jumbotron {
+  // background-image: url("https://images.pexels.com/photos/1158783/pexels-photo-1158783.jpeg?");
+  // background-size: cover;
+  background-color: white;
+  width: 100%;
+  color: purple;
+  // position: absolute;
+  left: 0px;
+  border-radius: 0px !important;
+  font-family: 'Montserrat', sans-serif;
+}
+
 
 /*-----New Arrivals----------*/
 .five-products{
@@ -9,7 +25,7 @@
 }
 .title-box
 {
-  background-color: coral;
+  background-color: purple;
   color: #fff;
   width: 100%;
   padding: 4px 10px;

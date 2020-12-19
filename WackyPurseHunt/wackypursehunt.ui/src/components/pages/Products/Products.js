@@ -56,7 +56,7 @@ class Products extends React.Component {
       <ProductCard key={product.id} product={product}/>));
     return (
       <React.Fragment>
-        <div className="d-flex flex-wrap">
+        <div className="filter-container d-flex flex-wrap">
         <FilterProducts theme={this.state.theme}
           sortColor={this.state.sortColor}
           sortSize={this.state.sortSize}
