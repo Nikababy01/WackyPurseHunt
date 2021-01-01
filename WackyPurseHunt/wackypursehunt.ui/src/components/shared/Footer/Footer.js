@@ -19,6 +19,13 @@ In recent years, we are developing globally at a rapid pace, winning recognition
 throughout America, Europe, and Australia. While our main intention is women’s bags. Our goal is to have
 a wide variety of high quality, fashionable products at low prices. We offers fashion-forward styles
 and innovative designs all delivered with a truly class-leading professional service that all our customers deserve."</p>
+      <div className="footer-social">
+        <a href="#"><i className="fab fa-facebook-square"></i></a>
+        <a href="#"><i className="fab fa-twitter-square"></i></a>
+        <a href="#"><i className="fab fa-linkedin"></i></a>
+        <a href="#"><i className="fab fa-github-square"></i></a>
+
+      </div>
       </div>
       </div>
       </React.Fragment>
