@@ -55,11 +55,11 @@ namespace WackyPurseHunt.Data
             var sql = @"select*
                        from Products p
                        where p.ProductThemeId = @productThemeId";
-                      var parameters = new { productThemeId = productThemeId };
+            var parameters = new { productThemeId = productThemeId };
 
             var selectedTheme = db.Query<Product>(sql, parameters);
-           return selectedTheme.ToList();
-          
+            return selectedTheme.ToList();
+
         }
         public List<Product> GetProductsByColor(string color)
         {
@@ -86,5 +86,77 @@ namespace WackyPurseHunt.Data
             return selectedSize.ToList();
 
         }
+        public void Add(Product productToAdd)
+        {
+            var sql = @"INSERT INTO [dbo].[Products]
+                                    ([Title]
+                                    ,[ImageUrl] 
+                                    ,[ProductThemeId] 
+                                    ,[Price]
+                                    ,[Description]
+                                    ,[DateAdded]
+                                    ,[AvgStarRating]
+                                    ,[Color]
+                                    ,[Size]
+                                    ,[IsActive])
+                                    Output inserted.Id
+                                   VALUES
+                                        (@title,@imageUrl,@productThemeId,@price,@description,GETDATE(),@avgStarRating,@color,@size,@isActive)";
+
+            using var db = new SqlConnection(_connectionString);
+
+            var newId = db.ExecuteScalar<int>(sql, productToAdd);
+
+            productToAdd.Id = newId;
+
+        }
+
+        public Product Update(int id, Product product)
+        {
+            var sql = @"Update[dbo].[Products]
+                                 SET [Title] = @title
+                                    ,[ImageUrl] = @imageUrl
+                                    ,[ProductThemeId] = @productThemeId
+                                    ,[Price] = @price
+                                    ,[Description] = @description
+                                    ,[DateAdded] = GETDATE()
+                                    ,[AvgStarRating] = @avgStarRating
+                                    ,[Color] = @color
+                                    ,[Size] = @size
+                                    ,[IsActive] = @isActive
+                                    output inserted.*
+                                    Where Id = @id";
+            using var db = new SqlConnection(_connectionString);
+
+            var parameters = new
+            {
+                Title = product.Title,
+                ImageUrl = product.ImageUrl,
+                ProductThemeId = product.ProductThemeId,
+                Price = product.Price,
+                Description = product.Description,
+                DateAdded = product.DateAdded,
+                AvgStarRating = product.AvgStarRating,
+                Color = product.Color,
+                Size = product.Size,
+                IsActive = product.IsActive
+            };
+
+            var updatedProducts = db.QueryFirstOrDefault<Product>(sql, parameters);
+            return updatedProducts;
+
+        }
+
+        public void Remove(int id)
+        {
+            var sql = @"DELETE
+                        FROM [dbo].[Products]
+                        Where Id = @id";
+
+            using var db = new SqlConnection(_connectionString);
+
+            db.Execute(sql, new { id = id });
+        }
+
     }
 }
