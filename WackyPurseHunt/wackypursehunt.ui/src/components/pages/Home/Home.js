@@ -28,6 +28,12 @@ class Home extends React.Component {
         </div>
       </div>
       <br />
+<div className="shopping-lady">
+<img src="https://thumbs.dreamstime.com/t/black-silhouette-woman-holding-shopping-bags-isolated-over-white-background-black-silhouette-woman-holding-shopping-bags-isolated-102879082.jpg" alt="lady"/>
+        <img src="https://thumbs.dreamstime.com/t/woman-standing-holding-shopping-bags-isolated-vector-silhouette-shoppers-sexy-girl-83471536.jpg" alt="lady"/>
+        <img src="https://thumbs.dreamstime.com/t/stylish-silhouette-woman-waiting-holding-purse-22480244.jpg" alt="lady"/>
+        <img src="https://thumbs.dreamstime.com/t/sexy-young-shopper-silhouette-chic-woman-shopping-bags-31256280.jpg" alt="lady"/>
+</div>
       <div className="container-five-products-featured">
       <div className="row">
         <div className="title-box">
