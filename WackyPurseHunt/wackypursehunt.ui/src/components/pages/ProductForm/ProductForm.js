@@ -85,12 +85,13 @@ class ProductForm extends React.Component {
 
     const newProduct = this.state;
     e.preventDefault();
-    productsData.createNewProduct(newProduct)
-      .then(() => {
-        this.props.history.push('/home');
-      })
-
-      .catch((err) => console.error('unable to save new product:', err));
+    productsData.createNewProduct(newProduct);
+    // .then(() => {
+    //   this.props.history.push('/home');
+    // })
+    // .catch((error) => {
+    //   console.error('there was an error in registering', error);
+    // });
   }
 
   render() {

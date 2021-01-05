@@ -18,7 +18,8 @@ const getProductsByTheme = (productThemeId) => axios.get(`${baseUrl}/products/th
 const getProductsByColor = (color) => axios.get(`${baseUrl}/products/colorCode/${color}`);
 const getProductsBySize = (size) => axios.get(`${baseUrl}/products/sizes/${size}`);
 
-const createNewProduct = (newProduct) => {
+const createNewProduct = (...newProduct) => {
+  console.log('newProduct', newProduct);
   const productInfo = {
     title: newProduct.title,
     imageUrl: newProduct.imageUrl,
@@ -31,6 +32,7 @@ const createNewProduct = (newProduct) => {
     size: newProduct.size,
     isActive: newProduct.isActive,
   };
+  console.log('productInfo', productInfo);
   axios.post(`${baseUrl}/products`, productInfo);
 };
 
