@@ -86,8 +86,9 @@ namespace WackyPurseHunt.Data
             return selectedSize.ToList();
 
         }
-        public void Add(Product productToAdd)
+        public int Add(Product newProduct)
         {
+            using var db = new SqlConnection(_connectionString);
             var sql = @"INSERT INTO [dbo].[Products]
                                     ([Title]
                                     ,[ImageUrl] 
@@ -102,12 +103,25 @@ namespace WackyPurseHunt.Data
                                     Output inserted.Id
                                    VALUES
                                         (@title,@imageUrl,@productThemeId,@price,@description,GETDATE(),@avgStarRating,@color,@size,@isActive)";
+            var productInfo = new
+            {
+                title = newProduct.Title,
+                imageUrl = newProduct.ImageUrl,
+                productThemeId = newProduct.ProductThemeId,
+                price = newProduct.Price,
+                description = newProduct.Description,
+                dateAdded = newProduct.DateAdded,
+                avgStarRating = newProduct.AvgStarRating,
+                color = newProduct.Color,
+                size = newProduct.Size,
+                isActive = newProduct.IsActive,
+            };
 
-            using var db = new SqlConnection(_connectionString);
 
-            var newId = db.ExecuteScalar<int>(sql, productToAdd);
+        var newId = db.ExecuteScalar<int>(sql, productInfo);
 
-            productToAdd.Id = newId;
+        newProduct.Id = newId;
+            return newId;
 
         }
 

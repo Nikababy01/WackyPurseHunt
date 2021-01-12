@@ -18,22 +18,10 @@ const getProductsByTheme = (productThemeId) => axios.get(`${baseUrl}/products/th
 const getProductsByColor = (color) => axios.get(`${baseUrl}/products/colorCode/${color}`);
 const getProductsBySize = (size) => axios.get(`${baseUrl}/products/sizes/${size}`);
 
-const createNewProduct = (...newProduct) => {
+const createNewProduct = (newProduct) => {
   console.log('newProduct', newProduct);
-  const productInfo = {
-    title: newProduct.title,
-    imageUrl: newProduct.imageUrl,
-    productThemeId: newProduct.productThemeId,
-    price: newProduct.price,
-    description: newProduct.description,
-    dateAdded: newProduct.dateAdded,
-    avgStarRating: newProduct.avgStarRating,
-    color: newProduct.color,
-    size: newProduct.size,
-    isActive: newProduct.isActive,
-  };
-  console.log('productInfo', productInfo);
-  axios.post(`${baseUrl}/products`, productInfo);
+
+  axios.post(`${baseUrl}/products`, newProduct);
 };
 
 const updateProduct = (id, updatedProduct) => axios.put(`${baseUrl}/products/${id}`, updatedProduct);
