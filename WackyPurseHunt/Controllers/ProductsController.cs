@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WackyPurseHunt.Data;
+using WackyPurseHunt.Models;
 
 namespace WackyPurseHunt.Controllers
 {
@@ -22,17 +23,17 @@ namespace WackyPurseHunt.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-          var allproducts = _productsRepo.GetAll();
+            var allproducts = _productsRepo.GetAll();
 
-          return Ok(allproducts);
+            return Ok(allproducts);
         }
-        
+
         [HttpGet("{id}")]
-        
+
         public IActionResult GetSingleProduct(int id)
         {
-            var singleProduct = _productsRepo.GetProductById(id);  
-             
+            var singleProduct = _productsRepo.GetProductById(id);
+
 
             if (singleProduct == null) return NotFound("Nothing was found with this id! Try again.");
 
@@ -54,7 +55,7 @@ namespace WackyPurseHunt.Controllers
         // #3 this goes with GetProductsbyColor
         [HttpGet("colorCode/{color}")]
 
-        public IActionResult GetProductByColor (string color)
+        public IActionResult GetProductByColor(string color)
         {
             var productColor = _productsRepo.GetProductsByColor(color);
 
@@ -82,5 +83,37 @@ namespace WackyPurseHunt.Controllers
 
             return Ok(topProducts);
         }
+
+        // Post new products
+        [HttpPost]
+        public IActionResult CreateProduct(Product product)
+        {
+            _productsRepo.Add(product);
+
+            return Created($"/api/products/{product.Id}", product);
+        }
+
+        //// Update existing products
+        //[HttpPut("{id")]
+        //public IActionResult UpdatedProducts(int id, Product product)
+        //{
+        //    var updatedProducts = _productsRepo.Update(id, product);
+        //    return Ok(updatedProducts);
+        //}
+
+        //// Delete Products
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteProduct(int id)
+        //{
+        //    if(_productsRepo.GetProductById(id) == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    var selectedProduct = _productsRepo.GetProductById(id);
+        //    _productsRepo.Remove(id);
+
+
+        //    return Ok($"{selectedProduct.Title} has been deleted!");
+        //}
     }
 }
