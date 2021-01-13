@@ -11,20 +11,20 @@ This project showcases the use of firebase and json data with REACT Routing. We 
 
 
 ## Screenshots
-### Google Login with Carousel
-![Main View](./screenshots/POBO1.PNG)
-### OUTINGS View
-![Main View](./screenshots/POBO2.PNG)
-### SINGLE View
-![Main View](./screenshots/POBO3.PNG)
-### COMMENTS AND REVIEWS View
-![Main View](./screenshots/POBO6.PNG)
-### ADD NEW OUTING View
-![Main View](./screenshots/POBO5.PNG)
-### EDIT OUTING
-![Main View](./screenshots/POBO4.PNG)
-### Add A Review
-![Main View](./screenshots/POBO7.PNG)
+### Home Page
+![Main View](./screenshots/home.PNG)
+### Products
+![Main View](./screenshots/Products.PNG)
+### Product View
+![Main View](./screenshots/ProductView.PNG)
+### Filter by Theme
+![Main View](./screenshots/FilterbyTheme.PNG)
+### Filter by Color
+![Main View](./screenshots/FilterbyColor.PNG)
+### Filter by Size
+![Main View](./screenshots/FilterbySize.PNG)
+### ShoppingCart View
+![Main View](./screenshots/ShoppingCart.PNG)
 
 ## How to Run
 1. Clone down this repo
