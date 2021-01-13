@@ -300,8 +300,7 @@ class ShoppingCart extends React.Component {
       </div>
           : <div>
           <h4>Total Price: ${cart.totalPrice}</h4>
-          <h4>Items:</h4>
-          <div>
+           <div>
             <Table hover>
               <thead>
                 <tr>
